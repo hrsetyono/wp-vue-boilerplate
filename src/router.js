@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import store from './store';
 
 import Home from './Home.vue';
 import UserLogin from './UserLogin.vue';
@@ -14,6 +15,7 @@ const routes = [
     component: Home,
     meta: {
       title: 'Home',
+      noAuthRequired: true,
     },
   },
   {
@@ -74,3 +76,5 @@ router.beforeEach((to, from, next) => {
 
   next();
 });
+
+export default router;

@@ -1,24 +1,14 @@
-# my-app
+# WP Vue Boilerplate
 
-## Project setup
-```
-npm install
-```
+A headless app using WordPress as backend.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+Includes:
 
-### Compiles and minifies for production
-```
-npm run build
-```
+- Login and Register using [JWT Auth](https://wordpress.org/plugins/jwt-authentication-for-wp-rest-api/) plugin.
+- Display archive and single-post page.
+- Display page.
+- Get Custom API that require login permission.
 
-### Lints and fixes files
-```
-npm run lint
-```
+## Tutorial
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- [Login and Register](https://wptips.dev/wp-login-with-vue)

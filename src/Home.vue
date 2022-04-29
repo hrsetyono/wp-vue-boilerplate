@@ -1,30 +1,26 @@
 <template>
   <div class="page">
-    <h1>Hello {{ user }}</h1>
-    <p>You are logged in</p>
-    <a href="#logout" @click.prevent="logout">
-      Logout
-    </a>
+    <h1>Hello World</h1>
+    <p>
+      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corporis nisi aliquid sunt culpa quia dolores porro repellat a magni aliquam, quo consectetur vero labore minus accusantium ducimus!
+    </p>
+    <p>
+      Ratione consectetur voluptatibus dolorum, facilis rerum maxime architecto magni? Corporis fuga necessitatibus qui mollitia! Nesciunt eligendi doloribus eum quos sapiente officia ex architecto?
+    </p>
   </div>
 </template>
 
 <script>
 export default {
   name: 'Home',
-  methods: {
-    logout() {
-      localStorage.removeItem('isLoggedIn');
-      localStorage.removeItem('token');
-      localStorage.removeItem('email');
-      localStorage.removeItem('displayName');
-
-      this.$store.commit('logoutUser');
-      this.$router.push({ name: 'UserLogin' });
-    }
-  }
+  data() {
+    return {};
+  },
 }
 </script>
 
-<style>
-
+<style lang="sass">
+.page
+  max-width: 1000px
+  margin: 2rem auto
 </style>
