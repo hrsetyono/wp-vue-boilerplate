@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <header class="main-header">
-      <img alt="Logo" src="./assets/logo.png">
+      <router-link :to="{ name: 'Home' }">
+        <img alt="Logo" src="./assets/logo.png">
+      </router-link>
 
       <nav v-if="$store.state.isLoggedIn">
         <!-- Show menu navigation -->
@@ -27,6 +29,11 @@ export default {
     return {};
   },
   async created() {
+    // only check valid if coming from pages that require auth
+    if (this.$route.meta.noAuthRequired) {
+      return;
+    }
+
     const isValid = await this.$store.dispatch('checkLoginState');
 
     if (!isValid) {
@@ -34,15 +41,15 @@ export default {
         name: 'UserLogin',
         query: {
           redirectTo: this.$route.name,
-          message: 'Your session has expired. Please login again'
         },
       });
     }
   },
 
   methods: {
-    logout() {
-      this.$store.dispatch('logout');
+    async logout() {
+      await this.$store.dispatch('logout');
+      this.$router.push({ name: 'UserLogin' });
     }
   }
 }
@@ -63,6 +70,7 @@ export default {
 
 .main-header
   display: flex
+  justify-content: center
   max-width: 1000px
   margin: 0 auto 2rem
   padding: 0.25rem 0

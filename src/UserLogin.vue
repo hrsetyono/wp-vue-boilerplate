@@ -12,11 +12,11 @@
     <!-- Main form -->
     <form class="form" @submit.prevent="login">
       <label>
-        <span>Email</span>
+        <span>Username</span>
         <input
-          v-model.trim="email"
-          type="email"
-          placeholder="you@email.com"
+          v-model.trim="username"
+          type="text"
+          placeholder="username or email"
         >
       </label>
       <label>
@@ -31,37 +31,41 @@
       </button>
     </form>
 
-    <!-- Link to Register -->
-    <div class="form-footnote">
-      <router-link :to="{name: 'UserRegister'}">
-        Register Now
-      </router-link>
-    </div>
+    <Loading v-if="isLoading" />
   </div>
 </template>
 
 <script>
+import Loading from './components/Loading.vue';
+
 export default {
   name: 'UserLogin',
+  components: {
+    Loading,
+  },
   data() {
     return {
-      email: '',
+      username: '',
       password: '',
 
       message: '',
+      isLoading: false,
     };
   },
 
   methods: {
     async login() {
       this.message = '';
+      this.isLoading = true;
 
       try {
         // Call the login function in store.js
         await this.$store.dispatch('login', {
-          username: this.email,
+          username: this.username,
           password: this.password,
         });
+
+        this.isLoading = true;
 
         // if redirected to login from secured page, redirect back
         if (this.$route.query.redirectTo) {
@@ -72,6 +76,7 @@ export default {
           this.$router.push({ name: 'Home' });
         }
       } catch (error) {
+        this.isLoading = false;
         this.message = 'Email or password is wrong';
       }
     }
@@ -81,7 +86,7 @@ export default {
 
 <style lang="sass">
 .form-wrapper
-  max-width: 600px
+  max-width: 360px
   margin: 3rem auto
 
 .form-message
@@ -102,15 +107,15 @@ export default {
 
   input
     width: 100%
-    padding: 0.25rem 0.5rem
+    padding: 0.5rem
 
   span
     display: block
     text-transform: uppercase
     font-size: smaller
 
-.form-footnote
-  margin-top: 0.5rem
-  font-size: smaller
-  text-align: center
+  button
+    padding: 0.5rem 1rem
+    background-color: green
+    color: white
 </style>

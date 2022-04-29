@@ -23,7 +23,7 @@ const mutations = {
 const actions = {
   async login({ commit }, payload) {
     const response = await axios.post(`${process.env.VUE_APP_API_URL}/jwt-auth/v1/token`, {
-      username: payload.email,
+      username: payload.username,
       password: payload.password,
     });
 
@@ -48,8 +48,7 @@ const actions = {
     localStorage.removeItem('email');
     localStorage.removeItem('displayName');
 
-    await commit('deleteUserCache');
-    this.$router.push({ name: 'UserLogin' });
+    commit('deleteUserCache');
   },
 
   /**
@@ -96,7 +95,7 @@ const store = {
   // This is global data, use mutations and actions to change this value.
   state: {
     isAdmin: false,
-    isLoggedIn: localStorage.getItem('isLoggedIn') || false,
+    isLoggedIn: localStorage.getItem('isLoggedIn') === 'true',
     userToken: localStorage.getItem('token') || '',
     userEmail: localStorage.getItem('email') || '',
     userDisplayName: localStorage.getItem('displayName') || '',

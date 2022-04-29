@@ -4,7 +4,6 @@ import store from './store';
 
 import Home from './Home.vue';
 import UserLogin from './UserLogin.vue';
-import UserRegister from './UserRegister.vue';
 
 Vue.use(VueRouter);
 
@@ -15,7 +14,6 @@ const routes = [
     component: Home,
     meta: {
       title: 'Home',
-      noAuthRequired: true,
     },
   },
   {
@@ -24,15 +22,6 @@ const routes = [
     component: UserLogin,
     meta: {
       title: 'Login',
-      noAuthRequired: true,
-    },
-  },
-  {
-    path: '/register',
-    name: 'UserRegister',
-    component: UserRegister,
-    meta: {
-      title: 'Register',
       noAuthRequired: true,
     },
   },
