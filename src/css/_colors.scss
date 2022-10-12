@@ -1,0 +1,89 @@
+// This file is using .scss format to make it easier to write Maps & List
+$colors: (
+  ( hex: #333333, var: '--text',       slug: 'text-base' ),
+  ( hex: #f6f6f6, var: '--textInvert', slug: 'text-invert' ),
+
+  ( hex: #888888, var: '--gray',       slug: 'gray' ),
+  ( hex: #5C5C5C, var: '--grayDark',   slug: 'gray-dark' ),
+  ( hex: #E0E0E0, var: '--grayLight',  slug: 'gray-light' ),
+
+  ( hex: #5C6BC0, var: '--color1',      slug: 'color-1',),
+  ( hex: #3F4EA2, var: '--color1Dark',  slug: 'color-1-dark' ),
+  ( hex: #D3D7EE, var: '--color1Light', slug: 'color-1-light' ),
+
+  ( hex: #2ecc71, var: '--color2',      slug: 'color-2' ),
+  ( hex: #26A65B, var: '--color2Dark',  slug: 'color-2-dark' ),
+  ( hex: #def7e8, var: '--color2Light', slug: 'color-2-light' ),
+
+  ( hex: #e74c3c, var: '--color3',      slug: 'color-3' ),
+  ( hex: #fbdedb, var: '--color3Light', slug: 'color-3-light' ),
+);
+
+// Use this for the Filter value https://codepen.io/hrsetyono/pen/BaxyJQv - Useful to change the color of a PNG 
+// If you don't use PNG icon, feel free to remove the filter
+$filters: (
+  'text-base': invert(15%) sepia(0%) saturate(40%) hue-rotate(188deg) brightness(98%) contrast(84%),
+  'text-invert': invert(100%) sepia(10%) saturate(7462%) hue-rotate(173deg) brightness(117%) contrast(108%),
+  
+  'gray': invert(60%) sepia(0%) saturate(0%) hue-rotate(151deg) brightness(90%) contrast(88%),
+  'gray-dark': invert(35%) sepia(0%) saturate(0%) hue-rotate(193deg) brightness(98%) contrast(89%),
+  'gray-light': invert(100%) sepia(2%) saturate(1493%) hue-rotate(171deg) brightness(114%) contrast(76%),
+
+  'color-1': invert(59%) sepia(80%) saturate(2621%) hue-rotate(178deg) brightness(91%) contrast(87%),
+  'color-1-dark': invert(39%) sepia(9%) saturate(4187%) hue-rotate(163deg) brightness(95%) contrast(86%),
+  'color-1-light': invert(87%) sepia(18%) saturate(184%) hue-rotate(170deg) brightness(105%) contrast(95%),
+
+  'color-2': invert(64%) sepia(63%) saturate(493%) hue-rotate(92deg) brightness(90%) contrast(90%),
+  'color-2-dark': invert(49%) sepia(22%) saturate(1352%) hue-rotate(92deg) brightness(103%) contrast(90%),
+  'color-2-light': invert(98%) sepia(67%) saturate(213%) hue-rotate(65deg) brightness(100%) contrast(95%),
+
+  'color-3': invert(59%) sepia(98%) saturate(5598%) hue-rotate(343deg) brightness(99%) contrast(83%),
+  'color-3-light': invert(96%) sepia(66%) saturate(482%) hue-rotate(292deg) brightness(101%) contrast(97%)
+);
+
+///// ROOT COLORS
+
+:root {
+  @each $c in $colors {
+    $var: map-get($c, 'var');
+    $hex: map-get($c, 'hex');
+    $slug: map-get($c, 'slug');
+
+    #{ $var } : #{ $hex };
+    #{ $var }RGB : #{ red($hex) }, #{ green($hex) }, #{ blue($hex) };
+    #{$var}Filter: map-get($filters, $slug);
+  }
+
+  // Other colors
+  --siteBg      : #f8f9fb
+  --siteBgColor : #f8f9fb
+  --colorAlert      : #e74c3c
+  --colorAlertLight : #f8cdc9
+}
+
+///// GUTENBERG COLOR CLASSES
+
+[class*="-background-color"] {
+  background-color: var(--bgColor);
+}
+
+.has-text-color,
+.has-inline-color {
+  color: var(--textColor, var(--text));
+}
+
+@each $c in $colors {
+  $var: map-get($c, 'var');
+  $slug: map-get($c, 'slug');
+  $filter: map-get($filters, $slug);
+
+  .has-#{ $slug }-background-color {
+    --bgColor: var(#{ $var });
+    --bgColorRGB: var(#{ $var }RGB);
+  }
+  .has-#{ $slug }-color {
+    --textColor: var(#{ $var });
+    --textColorRGB: var(#{ $var }RGB);
+    --filterColor: #{$filter};
+  }
+}

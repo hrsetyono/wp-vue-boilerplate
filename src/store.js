@@ -1,111 +1,58 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import axios from 'axios';
-
-Vue.use(Vuex);
+import { createStore } from 'vuex';
+import { wpApi, api } from './helpers';
 
 const mutations = {
-  cacheUser(state, { token, email, displayName }) {
-    state.isLoggedIn = true;
-    state.userToken = token;
-    state.userEmail = email;
-    state.userDisplayName = displayName;
+  setPosts(state, data) {
+    state.posts = data;
   },
 
-  deleteUserCache(state) {
-    state.isLoggedIn = false;
-    state.userToken = '';
-    state.userEmail = '';
-    state.userDisplayName = '';
+  /**
+   * Open or close the mobile menu
+   */
+  toggleOffcanvas(state) {
+    state.isOffcanvasOpen = !state.isOffcanvasOpen;
+    document.body.classList.toggle('has-open-offcanvas', state.isOffcanvasOpen);
+  },
+
+  closeOffcanvas(state) {
+    state.isOffcanvasOpen = false;
+    document.body.classList.remove('has-open-offcanvas');
   },
 };
 
 const actions = {
-  async login({ commit }, payload) {
-    const response = await axios.post(`${process.env.VUE_APP_API_URL}/jwt-auth/v1/token`, {
-      username: payload.email,
-      password: payload.password,
-    });
+  /**
+   * Get list of blog posts
+   */
+  async getPosts({ commit, state }) {
+    if (!state.posts) {
+      const response = await wpApi.get('/posts?_embed');
+      commit('setPosts', response.data);
+    }
 
-    const data = response.data;
-
-    localStorage.setItem('isLoggedIn', true);
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('displayName', data.user_display_name);
-    localStorage.setItem('email', data.user_email);
-
-    // call cacheUser() from mutations
-    await commit('cacheUser', {
-      token: data.token,
-      email: data.user_email,
-      displayName: data.user_display_name,
-    });
-  },
-
-  async logout({ commit }) {
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('token');
-    localStorage.removeItem('email');
-    localStorage.removeItem('displayName');
-
-    await commit('deleteUserCache');
-    this.$router.push({ name: 'UserLogin' });
+    return state.posts;
   },
 
   /**
-   * Check if user if logged in
+   * Get a Page title and content
    */
-  async checkLoginState({ commit }) {
-    const token = localStorage.getItem('token');
-
-    // if no token, empty the loggedIn cache
-    if (!token) {
-      await commit('deleteUserCache');
-      return false;
-    }
-
-    // if has token, check if it's still valid
-    try {
-      await axios.post(
-        `${process.env.VUE_APP_API_URL}/jwt-auth/v1/token/validate`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-      
-      // if still valid, cache it again
-      await commit('cacheUser', {
-        token,
-        email: localStorage.getItem('email'),
-        displayName: localStorage.getItem('displayName'),
-      });
-
-      return true;
-    } catch (error) {
-      localStorage.setItem('token', '');
-      return false;
-    }
+  async getPage(store, slug) {
+    const response = await wpApi.get(`/pages?slug=${slug}`);
+    return response.data;
   },
-}
+};
 
-
-const store = {
-  // This is global data, use mutations and actions to change this value.
+const store = createStore({
   state: {
-    isAdmin: false,
-    isLoggedIn: localStorage.getItem('isLoggedIn') || false,
-    userToken: localStorage.getItem('token') || '',
-    userEmail: localStorage.getItem('email') || '',
-    userDisplayName: localStorage.getItem('displayName') || '',
+    metaTitle: 'My Website',
+    metaDescription: 'Lorem ipsum dolor sit amet adipiscit amit',
+    posts: null,
+    isOffcanvasOpen: false,
   },
 
   mutations,
   actions,
-  modules: {
-  },
-};
+  modules: {},
+});
 
-export default new Vuex.Store(store);
+export default store;

@@ -1,80 +1,43 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
-import store from './store';
+import { createRouter, createWebHistory } from 'vue-router';
+import HomeView from './views/HomeView.vue';
+import PageView from './views/PageView.vue';
+import PostView from './views/PostView.vue';
 
-import Home from './Home.vue';
-import UserLogin from './UserLogin.vue';
-import UserRegister from './UserRegister.vue';
+import Error404 from './views/Error404.vue';
 
-Vue.use(VueRouter);
-
-const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home,
-    meta: {
-      title: 'Home',
-      noAuthRequired: true,
+export default createRouter({
+  history: createWebHistory(),
+  routes: [
+    {
+      path: '/',
+      name: 'home',
+      component: HomeView,
     },
-  },
-  {
-    path: '/login',
-    name: 'UserLogin',
-    component: UserLogin,
-    meta: {
-      title: 'Login',
-      noAuthRequired: true,
+    {
+      path: '/page/:slug',
+      name: 'page',
+      component: PageView,
     },
-  },
-  {
-    path: '/register',
-    name: 'UserRegister',
-    component: UserRegister,
-    meta: {
-      title: 'Register',
-      noAuthRequired: true,
+    {
+      path: '/post/:slug',
+      name: 'post',
+      component: PostView,
     },
-  },
-];
+    {
+      path: '/:pathMatch(.*)*',
+      name: '404',
+      component: Error404,
+    },
+  ],
+  scrollBehavior: async (to) => {
+    // If the link is hash, scroll smoothly there
+    if (to.hash) {
+      return {
+        el: to.hash,
+        behavior: 'smooth',
+      };
+    }
 
-const router = new VueRouter({
-  mode: 'history',
-  base: '/',
-  routes,
-  scrollBehavior() {
-    document.getElementById('app').scrollIntoView({ behavior: 'smooth' });
+    return { x: 0, y: 0 };
   },
 });
-
-// Set SEO metatag
-router.beforeEach((to, from, next) => {
-  document.title = `${to.meta.title} | My App`;
-  next();
-});
-
-// Logged-in state check
-router.beforeEach((to, from, next) => {
-  // redirect to Login page if auth required but not logged in
-  if (!to.meta.noAuthRequired && !store.state.isLoggedIn) {
-    next({
-      name: 'UserLogin',
-      query: {
-        redirectTo: to.name,
-        message: 'Please login to visit that page',
-      },
-    });
-  }
-
-  // redirect to Home if page is admin only but opened by non-admin
-  if (to.meta.adminOnly && !store.state.isAdmin) {
-    next({
-      name: 'Home',
-      query: { notAllowed: true },
-    });
-  }
-
-  next();
-});
-
-export default router;

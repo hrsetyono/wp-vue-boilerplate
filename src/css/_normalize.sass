@@ -1,0 +1,337 @@
+// Based on https://necolas.github.io/normalize.css/8.0.1
+
+*,
+*:before,
+*:after
+  -webkit-box-sizing: border-box
+  -moz-box-sizing: border-box
+  box-sizing: border-box
+
+html
+  line-height: 1.15 // Correct the line height in all browsers.
+  font-family: sans-serif
+  font-size: var(--fontSize) // change the "rem" value
+  scroll-behavior: smooth
+  -webkit-text-size-adjust: 100% // Prevent adjustments of font size after orientation changes in iOS.
+  -ms-text-size-adjust: 100%
+
+body
+  position: relative
+  overflow-x: hidden
+  background: var(--siteBg)
+  margin: 0
+  font-family: var(--fontFamily)
+  font-weight: var(--fontWeight)
+  font-size: var(--fontSize)
+  line-height: var(--lineHeight)
+  letter-spacing: var(--letterSpacing)
+  color: var(--text)
+  -webkit-animation: bugfix infinite 1s // Webkit sibling selector fix
+
+@-webkit-keyframes bugfix
+  from
+    padding: 0
+  to
+    padding: 0
+
+// Basic reset margin and padding
+*, body
+  margin: 0
+  padding: 0
+
+// Set correct display type
+main
+  display: block
+details
+  display: block
+summary
+  display: list-item
+article,
+aside,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+nav,
+section,
+picture
+  display: block
+[hidden]
+  display: none
+template
+  display: none
+
+
+///// TYPOGRAPHY
+
+p
+  margin-top: 0
+  margin-bottom: 0
+a
+  cursor: pointer
+  text-decoration: none
+  background-color: transparent // Remove the gray background on active links in IE 10.
+  color: var(--linkColor)
+  transition: var(--gTransition)
+
+b, strong
+  font-weight: bold
+em
+  font-style: italic
+
+h1, h2, h3, h4, h5, h6
+  margin: 0
+  font-family: var(--hFontFamily)
+  font-weight: var(--hFontWeight)
+  font-size: var(--hFontSize)
+  font-style: var(--hFontStyle)
+  line-height: var(--hLineHeight)
+  letter-spacing: var(--hLetterSpacing)
+  text-transform: var(--hTextTransform)
+  color: var(--hColor)
+h1
+  font-size: var(--h1Size)
+h2
+  font-size: var(--h2Size)
+h3
+  font-size: var(--h3Size)
+h4
+  font-size: var(--h4Size)
+h5
+  font-size: var(--h5Size)
+h6
+  font-size: var(--h6Size)
+
+small
+  font-size: 80% // Add the correct font size in all browsers.
+sub, sup
+  position: relative
+  font-size: 75%
+  line-height: 0 // Prevent `sub` and `sup` elements from affecting the line height
+  margin-right: 0.25rem
+  vertical-align: baseline
+sup
+  top: -0.125em
+  vertical-align: text-top
+  align-self: flex-start
+sub
+  bottom: 0.125em
+  vertical-align: text-bottom
+  align-self: flex-end
+
+blockquote cite
+  display: block
+  font-style: italic
+address, cite
+  font-style: normal
+
+ul
+  list-style-type: disc
+ol
+  list-style-type: decimal
+ul,
+ol
+  ul
+    list-style-type: circle
+  ol
+    list-style-type: lower-alpha
+
+
+///// OTHER TYPOGRAPHY
+
+abbr[title]
+  border-bottom: none // Remove the bottom border in Chrome 57-
+  text-decoration: underline // Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.
+  text-decoration: underline dotted
+
+dfn
+  font-style: italic
+mark
+  background: #ff0
+  color: #000
+q
+  quotes: "\201C" "\201D" "\2018" "\2019"
+
+
+// Code block
+pre
+  overflow: auto
+code, kbd, pre, samp
+  font-family: var(--codeFontFamily)
+  font-size: var(--codeFontSize)
+
+progress
+  vertical-align: baseline // Add the correct vertical alignment in Chrome, Firefox, and Opera.
+
+
+///// MEDIA
+
+img
+  border-style: none // Remove the border on images inside links in IE 10.
+  display: inline-block
+  vertical-align: middle
+  -ms-interpolation-mode: bicubic
+
+svg:not(:root)
+  overflow: hidden
+figure
+  margin: 0
+
+img,
+object,
+embed
+  max-width: 100%
+  height: auto
+
+  #map_canvas &,
+  .map_canvas &
+    max-width: none !important
+
+
+// A better looking default horizontal rule
+hr
+  -moz-box-sizing: content-box // Add the correct box sizing in Firefox.
+  box-sizing: content-box
+  display: block
+  overflow: visible // Show the overflow in Edge and IE.
+  height: 1px
+  margin: 1em 0
+  padding: 0
+  border: 0
+  border-top: 1px solid #ccc
+
+
+///// FORM
+
+button,
+input,
+optgroup,
+select,
+textarea
+  margin: 0
+  min-width: 0
+  color: inherit
+  font-family: inherit // Change the font styles in all browsers.
+  font-size: 100%
+  line-height: 1.15
+
+label
+  display: block
+  line-height: normal
+
+// Button
+button,
+[type="button"],
+[type="reset"],
+[type="submit"]
+  cursor: pointer
+  overflow: visible // Show the overflow in IE.
+  text-transform: none
+  line-height: normal
+  -webkit-appearance: button // Correct the inability to style clickable types in iOS and Safari.
+  -webkit-backface-visibility: hidden
+
+
+::-webkit-file-upload-button
+  -webkit-appearance: button // Correct the inability to style clickable types in iOS and Safari.
+  font: inherit
+
+
+button::-moz-focus-inner,
+[type="button"]::-moz-focus-inner,
+[type="reset"]::-moz-focus-inner,
+[type="submit"]::-moz-focus-inner
+  border-style: none // Remove the inner border and padding in Firefox.
+  padding: 0
+
+button:-moz-focusring,
+[type="button"]:-moz-focusring,
+[type="reset"]:-moz-focusring,
+[type="submit"]:-moz-focusring
+  outline: 1px dotted ButtonText // Restore the focus styles unset by the previous rule.
+
+// Input
+input
+  overflow: visible
+  line-height: normal
+
+[disabled],
+input[disabled]
+  cursor: default
+
+[type="checkbox"],
+[type="radio"]
+  box-sizing: border-box
+  padding: 0
+
+[type="checkbox"],
+[type="radio"]
+  box-sizing: border-box
+  padding: 0
+
+[type="number"]
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button
+    height: auto // Correct the cursor style of increment and decrement buttons in Chrome.
+
+[type="search"]
+  -webkit-appearance: textfield // Correct the odd appearance in Chrome and Safari.
+  outline-offset: -2px // Correct the outline style in Safari.
+  &::-webkit-search-decoration
+    -webkit-appearance: none
+
+// Disable Chrome's datepicker
+input::-webkit-calendar-picker-indicator
+  display: none
+
+[type="date"]::-webkit-input-placeholder
+  visibility: hidden !important
+
+
+textarea
+  overflow: auto // Remove the default vertical scrollbar in IE 10+.
+  vertical-align: top
+  resize: vertical
+  height: auto
+  min-height: 50px
+
+select
+  text-transform: none // Remove the inheritance of text transform in Edge, Firefox, and IE.
+optgroup
+  font-weight: bold
+
+fieldset
+  border: 0
+  margin: 0
+  padding: 0
+
+legend
+  box-sizing: border-box // Correct the text wrapping in Edge and IE.
+  display: table
+  max-width: 100%
+  padding: 0 // Remove the padding so developers are not caught out when they zero out the element
+  white-space: normal
+  color: inherit // Correct the color inheritance from `fieldset` elements in IE.
+
+
+// Table
+table
+  border-collapse: collapse
+  border-spacing: 0
+
+td, th
+  padding: 0
+
+.hide
+  display: none !important
+  visibility: hidden !important
+
+// hide adminbar in mobile
+@media ($below-adminbar)
+  html[lang]
+    margin-top: 0 !important
+
+  #wpadminbar
+    display: none
+

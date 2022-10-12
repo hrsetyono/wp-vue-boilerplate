@@ -1,15 +1,16 @@
-import Vue from 'vue';
+import { createApp } from 'vue';
+import './style.sass';
 import App from './App.vue';
 import router from './router';
 import store from './store';
 
-Vue.config.productionTip = false;
+const app = createApp(App);
+app.use(router);
+app.use(store);
 
-let app;
-if (!app) {
-  new Vue({
-    router,
-    store,
-    render: (h) => h(App),
-  }).$mount('#app');
-}
+// CUSTOM DIRECTIVE
+// app.directive('html-append', (el, binding) => {
+//   el.insertAdjacentHTML('beforeend', binding.value);
+// });
+
+app.mount('#app');

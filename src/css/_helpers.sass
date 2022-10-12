@@ -1,0 +1,141 @@
+@use "sass:math"
+
+///// MEDIA QUERY
+//
+// You can use the variable in @media block like this:
+//
+// @media ($below-xs)
+//   ...
+// @media ($above-xs) and ($below-m)
+//   ...
+
+$size-xsmall : 480px
+$size-small  : 768px
+$size-medium : 960px
+$size-large  : 1120px
+
+$below-xs: "max-width:#{ $size-xsmall }"
+$above-xs: "min-width:#{ $size-xsmall + 1px }"
+$below-s: "max-width:#{ $size-small }"
+$above-s: "min-width:#{ $size-small + 1px }"
+$below-m: "max-width:#{ $size-medium }"
+$above-m: "min-width:#{ $size-medium + 1px }"
+$below-l: "max-width:#{ $size-large }"
+$above-l: "min-width:#{ $size-large + 1px }"
+
+$below-nav: $below-s // small navigation breakpoint
+$above-nav: $above-s
+
+$below-adminbar: "max-width:782px"
+$above-adminbar: "min-width:783px"
+
+$portrait: "orientation: portrait"
+$landscape: "orientation: landscape"
+$retina: "min-resolution: 192dpi"
+
+// Media query for below or equal the size
+@function below( $size-px )
+  @return "max-width: #{$size-px}"
+
+// Media query for above the size
+@function above( $size-px )
+  @return "min-width: #{$size-px}"
+
+
+///// FUNCTIONS
+
+//
+// Override rgba() to allow CSS variable to have transparency
+//
+@function rgba( $r, $g, $b: false, $a: false )
+  @if type-of( $r ) == string
+    @return rgbA(var($r + 'RGB'), $g)
+
+  @if type-of( $r ) == color
+    @return rgbA( red($r), green($r), blue($r), $g )
+
+  @if $b and $a
+    @return rgbA( $r, $g, $b, $a )
+
+///// MIXINS
+
+// Position
+@mixin absolute-fill()
+  position: absolute
+  top: 0
+  right: 0
+  bottom: 0
+  left: 0
+
+// Add styling to input's placeholder
+@mixin placeholder()
+  &::-webkit-input-placeholder
+    @content
+  &::-moz-placeholder
+    @content
+  &:-ms-input-placeholder
+    @content
+  &:-moz-placeholder
+    @content
+
+
+// Apply to the wrapper of float elements so its height is fixed.
+@mixin clearfix()
+  &::before,
+  &::after
+    content: ""
+    display: table
+  &::after
+    clear: both
+
+
+// Create triangle shape using border. Mostly applied in ::before or ::after
+//
+// @param $direction - possible values: n / e / s / w / ne / se / sw / nw
+//
+// Usage:
+//   @include triangle( n, #333, 20px, 12px );
+//
+@mixin triangle($direction, $color, $width, $height: false)
+  $half-width: math.div($width, 2)
+
+  // If height is not specified, make the triangle equalateral
+  @if not $height
+    @if $direction in (n, e, s, w)
+      $height : ($half-width) * 1.732
+    @else if $direction in (ne, se, sw, nw)
+      $height : $width
+
+  width: 0
+  height: 0
+  font-size: 0
+  line-height: 0%
+  border-style: solid
+  border-color: transparent
+
+
+  @if $direction == n
+    border-width: 0 $half-width $height $half-width
+    border-bottom-color: $color
+  @else if $direction == e
+    border-width: $half-width 0 $half-width $height
+    border-left-color : $color
+  @else if $direction == s 
+    border-width: $height $half-width 0 $half-width
+    border-top-color: $color
+  @else if $direction == w
+    border-width: $half-width $height $half-width 0
+    border-right-color: $color
+
+  @else if $direction == ne
+    border-width: 0 $width $height 0
+    border-right-color: $color
+  @else if $direction == se
+    border-width: 0 0 $height $width
+    border-bottom-color: $color
+  @else if $direction == sw
+    border-width: $height 0 0 $width
+    border-left-color: $color
+  @else if $direction == nw
+    border-width: $height $width 0 0
+    border-top-color: $color
