@@ -1,8 +1,8 @@
 <script setup>
-import { useStore } from 'vuex';
-import MenuSVG from '../svg/menu.svg';
+import { useInterfaceStore } from '@/stores/interface';
+import MenuSVG from '@/svg/menu.svg';
 
-const store = useStore();
+const iStore = useInterfaceStore();
 </script>
 
 <template>
@@ -14,7 +14,7 @@ const store = useStore();
     </figure>
 
     <div class="header__toggle">
-      <a @click="store.commit('toggleOffcanvas')">
+      <a @click="iStore.toggleOffcanvas()">
         <MenuSVG />
       </a>
     </div>
@@ -25,6 +25,9 @@ const store = useStore();
 .header
   display: flex
   background-color: var(--color1)
+  position: sticky
+  z-index: 15
+  top: 0
   padding: 0.5rem var(--gridRim)
 
 .header__logo

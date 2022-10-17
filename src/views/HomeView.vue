@@ -1,15 +1,14 @@
 <script setup>
-import { ref } from 'vue';
-import { useStore } from 'vuex';
+import { useContentStore } from '@/stores/content';
 
-import PostList from '../components/PostList.vue';
+import PostList from '@/components/PostList.vue';
 
-const store = useStore();
-const posts = ref(store.state.posts);
+const contentStore = useContentStore();
+const { posts } = contentStore;
 </script>
 
 <template>
-  <main class="homepage">
+  <main class="home-page">
     <div class="wp-block-group alignfull has-background has-color-1-light-background-color">
       <div class="wp-block-group__inner-container">
         <h1 class="alignwide">
@@ -22,6 +21,6 @@ const posts = ref(store.state.posts);
 </template>
 
 <style lang="sass" scoped>
-.homepage
+.home-page
   padding-bottom: var(--groupSpacing)
 </style>

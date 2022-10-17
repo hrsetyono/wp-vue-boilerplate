@@ -1,25 +1,25 @@
 <script setup>
-import { useStore } from 'vuex';
+import { useInterfaceStore } from '@/stores/interface';
 
-import HouseSVG from '../svg/house.svg';
-import UserSVG from '../svg/user.svg';
-import PhoneSVG from '../svg/phone.svg';
-import InstagramSVG from '../svg/social-instagram.svg';
-import YoutubeSVG from '../svg/social-youtube.svg';
-import TwitterSVG from '../svg/social-twitter.svg';
+import HouseSVG from '@/svg/house.svg';
+import UserSVG from '@/svg/user.svg';
+import PhoneSVG from '@/svg/phone.svg';
+import InstagramSVG from '@/svg/social-instagram.svg';
+import YoutubeSVG from '@/svg/social-youtube.svg';
+import TwitterSVG from '@/svg/social-twitter.svg';
 
-const store = useStore();
+const iStore = useInterfaceStore();
 </script>
 
 <template>
   <aside
-    v-if="store.state.isOffcanvasOpen"
+    v-if="iStore.isOffcanvasOpen"
     class="offcanvas"
-    @click="store.commit('closeOffcanvas')"
+    @click="iStore.closeOffcanvas()"
   >
     <Transition name="slide" appear>
       <div class="offcanvas__inner" @click.stop>
-        <ul class="offcanvas__nav" @click="store.commit('closeOffcanvas')">
+        <ul class="offcanvas__nav" @click="iStore.closeOffcanvas()">
           <li>
             <router-link to="/">
               <HouseSVG />
@@ -57,7 +57,7 @@ const store = useStore();
 
     <button
       class="offcanvas__close"
-      @click="store.commit('closeOffcanvas')"
+      @click="iStore.closeOffcanvas()"
     />
   </aside>
 </template>
@@ -71,6 +71,9 @@ const store = useStore();
   bottom: 0
   left: 0
   background-color: rgba(black, .5)
+
+  .has-open-offcanvas &
+    cursor: pointer
 
 .offcanvas__inner
   display: flex
@@ -93,6 +96,10 @@ const store = useStore();
     display: flex
     align-items: center
     padding: 0.75rem 1rem
+    border-radius: var(--gRadius)
+
+  a:hover
+    background-color: rgba(black, .1)
 
   svg
     width: 1rem
@@ -116,6 +123,9 @@ const store = useStore();
     flex: 1
     padding: 1rem
     background-color: transparent
+
+  a:hover
+    background-color: rgba(black, .1)
 
   svg
     width: 1.25rem

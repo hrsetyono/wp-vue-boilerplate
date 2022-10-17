@@ -1,7 +1,7 @@
 // This file is using .scss format to make it easier to write Maps & List
 $colors: (
   ( hex: #333333, var: '--text',       slug: 'text-base' ),
-  ( hex: #f6f6f6, var: '--textInvert', slug: 'text-invert' ),
+  ( hex: #ffffff, var: '--textInvert', slug: 'text-invert' ),
 
   ( hex: #888888, var: '--gray',       slug: 'gray' ),
   ( hex: #5C5C5C, var: '--grayDark',   slug: 'gray-dark' ),
@@ -55,10 +55,10 @@ $filters: (
   }
 
   // Other colors
-  --siteBg      : #f8f9fb
-  --siteBgColor : #f8f9fb
-  --colorAlert      : #e74c3c
-  --colorAlertLight : #f8cdc9
+  --siteBg      : #f8f9fb;
+  --siteBgColor : #f8f9fb;
+  --colorAlert      : #e74c3c;
+  --colorAlertLight : #f8cdc9;
 }
 
 ///// GUTENBERG COLOR CLASSES

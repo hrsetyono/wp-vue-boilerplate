@@ -41,5 +41,15 @@
       "singleline": 2,
       "multiline": 2
     }]
+  },
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [
+          ["@", "./src"]
+        ],
+        "extensions": [".js",".jsx", ".vue"]
+      }
+    }
   }
 }

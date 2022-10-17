@@ -1,17 +1,20 @@
 <script setup>
 import { useRoute } from 'vue-router';
-import { useStore } from 'vuex';
 import { ref, watch, onBeforeMount } from 'vue';
-import LoadingSpinner from '../components/LoadingSpinner.vue';
+
+import { useContentStore } from '@/stores/content';
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
 
 const route = useRoute();
-const store = useStore();
-const page = ref({ title: '', content: '' });
+const contentStore = useContentStore();
+
+const page = ref();
 const isLoading = ref(true);
 
 const onReady = async () => {
   isLoading.value = true;
-  page.value = await store.dispatch('getPage', route.params.slug);
+  page.value = await contentStore.queryPage(route.params.slug);
+  document.title = document.title.replace(route.meta.title, page.value.title.rendered);
   isLoading.value = false;
 };
 

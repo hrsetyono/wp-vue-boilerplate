@@ -10,7 +10,7 @@ List of packages:
 
 - Vite
 - Vue Router
-- Vuex
+- Pinia
 - Axios
 - SVG Loader
 - ESLint Airbnb
@@ -63,8 +63,6 @@ List of packages:
 
 - `router.js` - Handles URL routing.
 
-- `store.js` - Manages global variables and functions using Vuex.
-
 - `helpers.js` - Reusable functions. Currently only containing `wpApi` (for native API) and `api` (for custom API).
 
 - `style.sass` - Global stylesheet, containing mainly Gutenberg styles and CSS Vars
@@ -72,6 +70,8 @@ List of packages:
 **FOLDERS**:
 
 - `/components` - Reusable elements.
+
+- `/stores` - Manages global variables and functions using Pinia.
 
 - `/views` - Templates for each route.
 

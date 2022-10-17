@@ -13,11 +13,11 @@ defineProps({
       v-for="p in posts"
       :key="`post-${p.id}`"
     >
-      <div v-if="p._embedded['wp:featuredmedia']" class="wp-block-latest-posts__featured-image">
+      <figure v-if="p._embedded['wp:featuredmedia']" class="wp-block-latest-posts__featured-image">
         <router-link :to="`/post/${p.slug}`">
           <img :src="p._embedded['wp:featuredmedia'][0].source_url">
         </router-link>
-      </div>
+      </figure>
 
       <router-link :to="`/post/${p.slug}`">
         {{ p.title.rendered }}

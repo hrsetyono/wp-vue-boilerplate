@@ -1,22 +1,24 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
-import { useStore } from 'vuex';
+import { useContentStore } from '@/stores/content';
+import { useUserStore } from '@/stores/user';
 
-import LoadingSpinner from './components/LoadingSpinner.vue';
-import HeaderMain from './components/HeaderMain.vue';
-import HeaderOffcanvas from './components/HeaderOffcanvas.vue';
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
+import HeaderMain from '@/components/HeaderMain.vue';
+import HeaderOffcanvas from '@/components/HeaderOffcanvas.vue';
 
-const store = useStore();
+const contentStore = useContentStore();
+const userStore = useUserStore();
 const isLoading = ref(true);
 
 onBeforeMount(async () => {
-  await store.dispatch('getPosts');
+  await contentStore.queryPosts();
   isLoading.value = false;
 });
 </script>
 
 <template>
-  <div class="main-container">
+  <div v-if="userStore.isLoggedIn" class="main-container">
     <HeaderMain />
     <HeaderOffcanvas />
 
@@ -31,13 +33,33 @@ onBeforeMount(async () => {
       </Transition>
     </router-view>
   </div>
+  <div v-else class="login-container">
+    <router-view v-slot="{ Component, route }">
+      <Transition
+        name="fade"
+        mode="out-in"
+        appear
+      >
+        <component :is="Component" :key="route.path" />
+      </Transition>
+    </router-view>
+  </div>
 </template>
 
 <style lang="sass">
 .main-container
+  position: relative
   max-width: 1200px
   margin: 0 auto
   box-shadow: var(--shadowThin)
+
+.login-container
+  display: flex
+  align-items: center
+  justify-content: center
+  width: 100vw
+  height: 100vh
+  background-color: rgba(black, .05)
 
 .fade-enter-from,
 .fade-leave-to
