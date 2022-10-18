@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
 
-export const useInterfaceStore = defineStore('interface', () => {
+export const useUIStore = defineStore('ui', () => {
   const isOffcanvasOpen = ref(false);
 
   /**
@@ -24,4 +24,4 @@ export const useInterfaceStore = defineStore('interface', () => {
   };
 });
 
-export default useInterfaceStore;
+export default useUIStore;

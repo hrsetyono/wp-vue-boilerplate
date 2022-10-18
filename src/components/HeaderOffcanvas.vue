@@ -1,25 +1,28 @@
 <script setup>
-import { useInterfaceStore } from '@/stores/interface';
+import { useUIStore } from '@/stores/ui';
+import { useUserStore } from '@/stores/user';
 
 import HouseSVG from '@/svg/house.svg';
 import UserSVG from '@/svg/user.svg';
 import PhoneSVG from '@/svg/phone.svg';
+import PowerOffSVG from '@/svg/power-off.svg';
 import InstagramSVG from '@/svg/social-instagram.svg';
 import YoutubeSVG from '@/svg/social-youtube.svg';
 import TwitterSVG from '@/svg/social-twitter.svg';
 
-const iStore = useInterfaceStore();
+const uiStore = useUIStore();
+const userStore = useUserStore();
 </script>
 
 <template>
   <aside
-    v-if="iStore.isOffcanvasOpen"
+    v-if="uiStore.isOffcanvasOpen"
     class="offcanvas"
-    @click="iStore.closeOffcanvas()"
+    @click="uiStore.closeOffcanvas()"
   >
     <Transition name="slide" appear>
       <div class="offcanvas__inner" @click.stop>
-        <ul class="offcanvas__nav" @click="iStore.closeOffcanvas()">
+        <ul class="offcanvas__nav" @click="uiStore.closeOffcanvas()">
           <li>
             <router-link to="/">
               <HouseSVG />
@@ -40,6 +43,15 @@ const iStore = useInterfaceStore();
           </li>
         </ul>
 
+        <ul class="offcanvas__nav is-aligned-bottom">
+          <li>
+            <a @click="userStore.logout">
+              <PowerOffSVG />
+              <span>Logout</span>
+            </a>
+          </li>
+        </ul>
+
         <!-- Social Media -->
         <footer class="offcanvas__buttons">
           <a href="https://instagram.com" target="_blank">
@@ -57,7 +69,7 @@ const iStore = useInterfaceStore();
 
     <button
       class="offcanvas__close"
-      @click="iStore.closeOffcanvas()"
+      @click="uiStore.closeOffcanvas()"
     />
   </aside>
 </template>
@@ -76,6 +88,7 @@ const iStore = useInterfaceStore();
     cursor: pointer
 
 .offcanvas__inner
+  cursor: default
   display: flex
   flex-direction: column
   overflow-y: auto
@@ -95,8 +108,12 @@ const iStore = useInterfaceStore();
   a
     display: flex
     align-items: center
-    padding: 0.75rem 1rem
+    padding: 1rem 0.5rem
     border-radius: var(--gRadius)
+    line-height: 1
+    text-transform: uppercase
+    letter-spacing: 0.025em
+    font-weight: 600
 
   a:hover
     background-color: rgba(black, .1)
@@ -104,7 +121,13 @@ const iStore = useInterfaceStore();
   svg
     width: 1rem
     height: 1rem
-    margin-right: 0.5rem
+    margin-right: 1rem
+
+  :deep(path)
+    fill: var(--color1)
+
+  &.is-aligned-bottom
+    margin-top: auto
 
 .offcanvas__buttons
   display: flex
@@ -113,7 +136,6 @@ const iStore = useInterfaceStore();
   row-gap: 0.5rem
   background-color: var(--grayLight)
 
-  margin-top: auto
   border-top: 1px solid var(--grayLight)
 
   a
@@ -125,13 +147,19 @@ const iStore = useInterfaceStore();
     background-color: transparent
 
   a:hover
+    --iconColor: var(--text)
     background-color: rgba(black, .1)
+
+  a:active
+    background-color: rgba(black, .2)
+    transition: none
 
   svg
     width: 1.25rem
     height: 1.25rem
   :deep(path)
-    fill: var(--gray)
+    fill: var(--iconColor, var(--gray))
+    transition: var(--gTransition)
 
 .offcanvas__close
   display: inline-block

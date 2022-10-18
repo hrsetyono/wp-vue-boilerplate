@@ -41,6 +41,7 @@ const router = createRouter({
       component: LoginView,
       meta: {
         title: 'Login',
+        layout: 'Login',
         allowGuest: true,
       },
     },
@@ -68,17 +69,23 @@ const router = createRouter({
   },
 });
 
+// Change SEO metatag
 router.beforeEach((to, from, next) => {
-  // Change SEO metatag
   document.title = `${to.meta.title} | My Project`;
 
+  // Check for authentication
   const userStore = useUserStore();
 
-  // if require login but not logged in
-  if (!to.meta.allowGuest && !userStore.isLoggedIn) {
+  // if allow guest, no need to check for loggedIn status
+  if (to.meta.allowGuest) {
+    next();
+  } else if (!userStore.isLoggedIn) { // if not logged in
     next({
       name: 'login',
-      query: { redirectTo: to.fullPath },
+      query: {
+        redirectTo: to.fullPath,
+        message: 'Please login to view that page',
+      },
     });
   } else {
     next();

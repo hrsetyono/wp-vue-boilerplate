@@ -1,19 +1,42 @@
 <script setup>
 import { ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
+
+const route = useRoute();
+const router = useRouter();
+const userStore = useUserStore();
 
 const email = ref('');
 const password = ref('');
-const message = ref('');
+const message = ref(route.query.message);
+const messageType = ref('alert');
 
-const userStore = useUserStore();
+/**
+ * Do login and handle error / success
+ */
 const login = async () => {
-  const result = await userStore.login(email.value, password.value);
+  const response = await userStore.login(email.value, password.value);
 
-  console.log(result);
   // if error
-  if (result.response.status === 403) {
-    message.value = result.response.data.message;
+  switch (response.status) {
+    case 403:
+      messageType.value = 'alert';
+      message.value = response.message;
+      break;
+
+    case 200:
+      messageType.value = 'good';
+      message.value = response.message;
+
+      setTimeout(() => {
+        router.push(route.query.redirectTo || { name: 'home' });
+      }, 1000);
+      break;
+
+    default:
+      messageType.value = 'alert';
+      message.value = 'Connection error. Is your internet fine?';
   }
 };
 </script>
@@ -28,7 +51,7 @@ const login = async () => {
       <aside
         v-if="message"
         :key="message"
-        class="toast"
+        :class="`toast is-${messageType}`"
         v-html="message"
       />
     </Transition>
@@ -75,7 +98,12 @@ const login = async () => {
   box-shadow: var(--shadow0)
   font-size: var(--sFontSize)
 
-  border-left: 4px solid var(--colorAlert)
+  border-left: 4px solid
+
+  &.is-alert
+    border-left-color: var(--colorRed)
+  &.is-good
+    border-left-color: var(--colorGreen)
 
 .user-form
   display: flex
@@ -90,7 +118,7 @@ const login = async () => {
   box-shadow: var(--shadow0)
 
   @media ($below-xs)
-    padding: 0.5rem
+    padding: 1rem
 
 .user-form__field
   display: flex

@@ -1,8 +1,8 @@
 <script setup>
-import { useInterfaceStore } from '@/stores/interface';
+import { useUIStore } from '@/stores/ui';
 import MenuSVG from '@/svg/menu.svg';
 
-const iStore = useInterfaceStore();
+const uiStore = useUIStore();
 </script>
 
 <template>
@@ -14,7 +14,7 @@ const iStore = useInterfaceStore();
     </figure>
 
     <div class="header__toggle">
-      <a @click="iStore.toggleOffcanvas()">
+      <a @click="uiStore.toggleOffcanvas()">
         <MenuSVG />
       </a>
     </div>

@@ -1,78 +1,25 @@
 <script setup>
-import { ref, onBeforeMount } from 'vue';
-import { useContentStore } from '@/stores/content';
+import { defineAsyncComponent, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 
-import LoadingSpinner from '@/components/LoadingSpinner.vue';
-import HeaderMain from '@/components/HeaderMain.vue';
-import HeaderOffcanvas from '@/components/HeaderOffcanvas.vue';
+const route = useRoute();
 
-const contentStore = useContentStore();
-const userStore = useUserStore();
-const isLoading = ref(true);
+const getLayout = () => {
+  const layout = route.meta.layout || '';
+  return defineAsyncComponent(() => import(`./Layout${layout}.vue`));
+};
 
-onBeforeMount(async () => {
-  await contentStore.queryPosts();
-  isLoading.value = false;
+// Validate API token for every refresh
+onMounted(async () => {
+  const userStore = useUserStore();
+  userStore.validateToken();
 });
 </script>
 
 <template>
-  <div v-if="userStore.isLoggedIn" class="main-container">
-    <HeaderMain />
-    <HeaderOffcanvas />
-
-    <LoadingSpinner v-if="isLoading" />
-    <router-view v-else v-slot="{ Component, route }">
-      <Transition
-        name="fade"
-        mode="out-in"
-        appear
-      >
-        <component :is="Component" :key="route.path" />
-      </Transition>
-    </router-view>
-  </div>
-  <div v-else class="login-container">
-    <router-view v-slot="{ Component, route }">
-      <Transition
-        name="fade"
-        mode="out-in"
-        appear
-      >
-        <component :is="Component" :key="route.path" />
-      </Transition>
-    </router-view>
-  </div>
+  <component :is="getLayout()" />
 </template>
 
-<style lang="sass">
-.main-container
-  position: relative
-  max-width: 1200px
-  margin: 0 auto
-  box-shadow: var(--shadowThin)
-
-.login-container
-  display: flex
-  align-items: center
-  justify-content: center
-  width: 100vw
-  height: 100vh
-  background-color: rgba(black, .05)
-
-.fade-enter-from,
-.fade-leave-to
-  opacity: 0
-  transform: translateY(1rem)
-
-.fade-enter-to,
-.fade-leave-from
-  opacity: 1
-  transform: none
-
-.fade-enter-active,
-.fade-leave-active
-  transition: var(--gTransition)
-  transition-delay: .3s
+<style lang="sass" scoped>
 </style>

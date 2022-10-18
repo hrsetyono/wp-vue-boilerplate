@@ -1,10 +1,16 @@
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { defineStore } from 'pinia';
 import { authApi } from '../helpers';
 
 export const useUserStore = defineStore('user', () => {
-  const isLoggedIn = ref(false);
-  const user = ref({ token: null });
+  const router = useRouter();
+
+  const token = ref(localStorage.getItem('userToken'));
+  const email = ref(localStorage.getItem('userEmail'));
+  const displayName = ref(localStorage.getItem('userDisplayName'));
+
+  const isLoggedIn = computed(() => !!token.value);
 
   /**
    * Login user and cache the profile data
@@ -16,58 +22,75 @@ export const useUserStore = defineStore('user', () => {
         password,
       });
 
+      // cache the data into store
       isLoggedIn.value = true;
-      user.value = {
-        token: response.data.token,
-        email: response.data.user_email,
-        displayName: response.data.user_display_name,
-      };
+      token.value = response.data.token;
+      email.value = response.data.user_email;
+      displayName.value = response.data.user_display_name;
 
-      return true;
+      // cache the data into localStorage
+      localStorage.setItem('isLoggedIn', true);
+      localStorage.setItem('userToken', response.data.token);
+      localStorage.setItem('userEmail', response.data.user_email);
+      localStorage.setItem('userDisplayName', response.data.user_display_name);
+
+      return {
+        status: response.status,
+        message: 'Login success, redirecting back…',
+      };
     } catch (error) {
-      return error;
+      return {
+        status: error.response.status,
+        message: error.response.data.message,
+      };
     }
   }
 
   /**
    * Logout user and clear all cache
    */
-  async function logout() {
-    isLoggedIn.value = false;
-    user.value = { token: null };
+  function logout() {
+    token.value = '';
+    localStorage.removeItem('userToken');
+
+    router.push({
+      name: 'login',
+      query: { message: 'You have successfully logged out' },
+    });
   }
 
   /**
    * Check whether the token is still valid or need to login again
    */
-  async function validateToken(token) {
+  async function validateToken() {
+    if (!token.value) {
+      return;
+    }
+
     try {
-      await authApi.post(
-        `${process.env.VUE_APP_AUTH_URL}/token/validate`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+      const headers = {
+        Authorization: `Bearer ${token.value}`,
+      };
 
-      // commit('loginUser', {
-      //   token,
-      //   email: localStorage.getItem('email'),
-      //   displayName: localStorage.getItem('displayName'),
-      // });
+      await authApi.post('/token/validate', {}, { headers });
+      // If token is valid, do nothing
+    } catch (error) {
+      // If invalid, push back to login
+      token.value = '';
+      localStorage.removeItem('userToken');
 
-      return true;
-    } catch (error) { // if token is invalid
-      user.value.token = null;
-      return false;
+      router.push({
+        name: 'login',
+        query: { message: 'Your session has expired. Please login again.' },
+      });
     }
   }
 
   return {
     isLoggedIn,
-    user,
+    token,
+    email,
+    displayName,
 
     login,
     logout,
