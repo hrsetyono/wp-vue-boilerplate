@@ -1,7 +1,7 @@
 <script setup>
 import { defineAsyncComponent, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { useUserStore } from '@/stores/user';
+import { useUserStore } from '@/user/stores-user';
 
 const route = useRoute();
 

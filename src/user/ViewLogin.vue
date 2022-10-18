@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useUserStore } from '@/stores/user';
+import { useUserStore } from '@/user/stores-user';
 
 const route = useRoute();
 const router = useRouter();
@@ -18,13 +18,14 @@ const messageType = ref('alert');
 const login = async () => {
   const response = await userStore.login(email.value, password.value);
 
-  // if error
   switch (response.status) {
+    // if error
     case 403:
       messageType.value = 'alert';
       message.value = response.message;
       break;
 
+    // if working
     case 200:
       messageType.value = 'good';
       message.value = response.message;
@@ -62,7 +63,6 @@ const login = async () => {
         <input
           v-model="email"
           type="email"
-          placeholder="your@email.com"
         >
       </label>
       <label class="user-form__field">
@@ -76,6 +76,10 @@ const login = async () => {
         </button>
       </div>
     </form>
+
+    <footer class="form-links">
+      
+    </footer>
   </section>
 </template>
 
@@ -99,6 +103,9 @@ const login = async () => {
   font-size: var(--sFontSize)
 
   border-left: 4px solid
+
+  :deep(a)
+    text-decoration: underline
 
   &.is-alert
     border-left-color: var(--colorRed)

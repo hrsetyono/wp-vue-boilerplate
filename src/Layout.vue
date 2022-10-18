@@ -1,14 +1,12 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
-import { useContentStore } from '@/stores/content';
-import { useUserStore } from '@/stores/user';
+import { useContentStore } from '@/stores-content';
 
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import HeaderMain from '@/components/HeaderMain.vue';
 import HeaderOffcanvas from '@/components/HeaderOffcanvas.vue';
 
 const contentStore = useContentStore();
-const userStore = useUserStore();
 const isLoading = ref(true);
 
 onBeforeMount(async () => {
@@ -19,23 +17,12 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <div v-if="userStore.isLoggedIn" class="main-container">
+  <div class="main-container">
     <HeaderMain />
     <HeaderOffcanvas />
 
     <LoadingSpinner v-if="isLoading" />
     <router-view v-else v-slot="{ Component, route }">
-      <Transition
-        name="fade"
-        mode="out-in"
-        appear
-      >
-        <component :is="Component" :key="route.path" />
-      </Transition>
-    </router-view>
-  </div>
-  <div v-else class="login-container">
-    <router-view v-slot="{ Component, route }">
       <Transition
         name="fade"
         mode="out-in"

@@ -1,12 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import { useUserStore } from '@/stores/user';
+import { userRoutes, getNextRoute } from '@/user/router-user';
 
-import HomeView from '@/views/HomeView.vue';
-import PageView from '@/views/PageView.vue';
-import PostView from '@/views/PostView.vue';
-import LoginView from '@/views/LoginView.vue';
-import Error404 from '@/views/Error404.vue';
+import ViewHome from '@/views/ViewHome.vue';
+import ViewPage from '@/views/ViewPage.vue';
+import ViewPost from '@/views/ViewPost.vue';
+import View404 from '@/views/View404.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -14,7 +13,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView,
+      component: ViewHome,
       meta: {
         title: 'Home',
       },
@@ -22,7 +21,7 @@ const router = createRouter({
     {
       path: '/page/:slug',
       name: 'page',
-      component: PageView,
+      component: ViewPage,
       meta: {
         title: 'Loading…',
       },
@@ -30,30 +29,22 @@ const router = createRouter({
     {
       path: '/post/:slug',
       name: 'post',
-      component: PostView,
+      component: ViewPost,
       meta: {
         title: 'Loading…',
       },
     },
-    {
-      path: '/login',
-      name: 'login',
-      component: LoginView,
-      meta: {
-        title: 'Login',
-        layout: 'Login',
-        allowGuest: true,
-      },
-    },
+    // Error
     {
       path: '/:pathMatch(.*)*',
       name: '404',
-      component: Error404,
+      component: View404,
       meta: {
         title: 'Page Not Found',
         allowGuest: true,
       },
     },
+    ...userRoutes,
   ],
 
   scrollBehavior: async (to) => {
@@ -73,23 +64,8 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   document.title = `${to.meta.title} | My Project`;
 
-  // Check for authentication
-  const userStore = useUserStore();
-
-  // if allow guest, no need to check for loggedIn status
-  if (to.meta.allowGuest) {
-    next();
-  } else if (!userStore.isLoggedIn) { // if not logged in
-    next({
-      name: 'login',
-      query: {
-        redirectTo: to.fullPath,
-        message: 'Please login to view that page',
-      },
-    });
-  } else {
-    next();
-  }
+  next(getNextRoute(to));
+  // next();
 });
 
 export default router;

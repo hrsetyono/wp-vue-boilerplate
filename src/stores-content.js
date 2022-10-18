@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
-import { wpApi, api } from '../helpers';
+import { wpApi, api } from './helpers';
 
 export const useContentStore = defineStore('content', () => {
   const posts = ref([]);

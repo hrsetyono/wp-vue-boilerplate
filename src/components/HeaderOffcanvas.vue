@@ -1,6 +1,6 @@
 <script setup>
-import { useUIStore } from '@/stores/ui';
-import { useUserStore } from '@/stores/user';
+import { useUIStore } from '@/stores-ui';
+import { useUserStore } from '@/user/stores-user';
 
 import HouseSVG from '@/svg/house.svg';
 import UserSVG from '@/svg/user.svg';
@@ -98,7 +98,7 @@ const userStore = useUserStore();
   top: 0
   right: 0
   bottom: 0
-  width: 300px
+  width: 260px
   box-shadow: var(--shadow1)
 
 .offcanvas__nav

@@ -1,7 +1,7 @@
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { defineStore } from 'pinia';
-import { authApi } from '../helpers';
+import { authApi } from '@/user/helpers-user';
 
 export const useUserStore = defineStore('user', () => {
   const router = useRouter();
@@ -23,13 +23,11 @@ export const useUserStore = defineStore('user', () => {
       });
 
       // cache the data into store
-      isLoggedIn.value = true;
       token.value = response.data.token;
       email.value = response.data.user_email;
       displayName.value = response.data.user_display_name;
 
       // cache the data into localStorage
-      localStorage.setItem('isLoggedIn', true);
       localStorage.setItem('userToken', response.data.token);
       localStorage.setItem('userEmail', response.data.user_email);
       localStorage.setItem('userDisplayName', response.data.user_display_name);
@@ -87,10 +85,10 @@ export const useUserStore = defineStore('user', () => {
   }
 
   return {
-    isLoggedIn,
     token,
     email,
     displayName,
+    isLoggedIn,
 
     login,
     logout,

@@ -1,5 +1,5 @@
 <script setup>
-import { useContentStore } from '@/stores/content';
+import { useContentStore } from '@/stores-content';
 
 import PostList from '@/components/PostList.vue';
 

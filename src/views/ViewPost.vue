@@ -1,7 +1,7 @@
 <script setup>
 import { useRoute } from 'vue-router';
 import { ref, onMounted, watch } from 'vue';
-import { useContentStore } from '@/stores/content';
+import { useContentStore } from '@/stores-content';
 
 const route = useRoute();
 const contentStore = useContentStore();

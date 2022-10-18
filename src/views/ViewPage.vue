@@ -2,7 +2,7 @@
 import { useRoute } from 'vue-router';
 import { ref, watch, onBeforeMount } from 'vue';
 
-import { useContentStore } from '@/stores/content';
+import { useContentStore } from '@/stores-content';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 
 const route = useRoute();
