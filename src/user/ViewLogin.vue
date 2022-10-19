@@ -78,7 +78,10 @@ const login = async () => {
     </form>
 
     <footer class="form-links">
-      
+      Don't have an account?
+      <router-link :to="{ name: 'register' }">
+        Register Now
+      </router-link>
     </footer>
   </section>
 </template>
@@ -131,7 +134,7 @@ const login = async () => {
   display: flex
   flex-direction: column
   background-color: rgba(black, .05)
-  padding: 0.75rem
+  padding: 0.5rem 0.75rem 0.75rem
   border: 2px solid rgba(black, .05)
   border-radius: var(--gRadius)
 
@@ -145,7 +148,8 @@ const login = async () => {
     font-weight: 700
     font-size: var(--xsFontSize)
 
-  input
+  input,
+  select
     background-color: transparent
     border: none
     outline: none
@@ -153,6 +157,16 @@ const login = async () => {
 
 .user-form__submit
   text-align: right
+
+.form-links
+  margin-top: 1rem
+  text-align: center
+  color: var(--gray)
+  font-size: var(--sFontSize)
+
+  a
+    color: var(--gray)
+    text-decoration: underline
 
 // Animation
 .fade-enter-from,

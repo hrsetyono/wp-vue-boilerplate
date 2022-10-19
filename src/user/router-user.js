@@ -47,7 +47,7 @@ export const getNextRoute = (to) => {
   if (to.meta.allowGuest) {
     return null;
   }
-  
+
   // if not logged in
   if (!userStore.isLoggedIn) {
     return {
@@ -59,7 +59,7 @@ export const getNextRoute = (to) => {
     };
   }
 
-  return null
-}
+  return null;
+};
 
 export default userRoutes;
