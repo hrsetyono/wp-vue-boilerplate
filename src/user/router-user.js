@@ -2,7 +2,8 @@ import { useUserStore } from '@/user/stores-user';
 
 import ViewLogin from '@/user/ViewLogin.vue';
 import ViewRegister from '@/user/ViewRegister.vue';
-import ViewForgotPassword from '@/user/ViewForgotPassword.vue';
+import ViewPasswordForgot from '@/user/ViewPasswordForgot.vue';
+import ViewPasswordReset from '@/user/ViewPasswordReset.vue';
 
 export const userRoutes = [
   {
@@ -11,7 +12,7 @@ export const userRoutes = [
     component: ViewLogin,
     meta: {
       title: 'Login',
-      layout: 'Login',
+      layout: 'LayoutLogin',
       allowGuest: true,
     },
   },
@@ -21,17 +22,27 @@ export const userRoutes = [
     component: ViewRegister,
     meta: {
       title: 'Register',
-      layout: 'Login',
+      layout: 'LayoutLogin',
       allowGuest: true,
     },
   },
   {
-    path: '/forgot-password',
-    name: 'forgotPassword',
-    component: ViewForgotPassword,
+    path: '/password-forgot',
+    name: 'passwordForgot',
+    component: ViewPasswordForgot,
     meta: {
       title: 'Forgot Password',
-      layout: 'Login',
+      layout: 'LayoutLogin',
+      allowGuest: true,
+    },
+  },
+  {
+    path: '/password-reset',
+    name: 'passwordReset',
+    component: ViewPasswordReset,
+    meta: {
+      title: 'Reset Password',
+      layout: 'LayoutLogin',
       allowGuest: true,
     },
   },

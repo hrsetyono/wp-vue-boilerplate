@@ -11,9 +11,16 @@
 <style lang="sass" scoped>
 .loading
   display: flex
-  align-items: center
   justify-content: center
-  padding: var(--blockSpacing) 0
+  align-items: center
+
+  position: fixed
+  top: 0
+  left: 0
+  z-index: 101
+  height: 100%
+  width: 100%
+  background-color: rgba(black, .5)
 
   img
     width: 3rem

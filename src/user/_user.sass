@@ -1,0 +1,74 @@
+.user-form
+  display: grid
+  grid-template-columns: repeat(6, 1fr)
+  row-gap: 1rem
+  column-gap: 1rem
+
+  max-width: 320px
+  width: 320px
+  background-color: var(--textInvert)
+  padding: 1.5rem
+  border-radius: var(--gRadius)
+  box-shadow: var(--shadow0)
+
+
+  > *
+    grid-column: span 6
+
+.user-form__field
+  display: flex
+  flex-direction: column
+  background-color: rgba(black, .05)
+  
+  padding: 0.5rem
+  border: 2px solid rgba(black, .05)
+  border-radius: var(--gRadius)
+
+  &.is-half
+    grid-column: span 3
+  &.is-third
+    grid-column: span 2
+  &.is-two-third
+    grid-column: span 4
+
+
+  &:focus-within
+    border-color: var(--color1)
+  &.has-error
+    border-color: var(--colorRed)
+
+  span
+    margin-bottom: 0.5rem
+    letter-spacing: 0.05em
+    text-transform: uppercase
+    font-weight: 700
+    font-size: var(--xsFontSize)
+
+  input,
+  select
+    background-color: transparent
+    border: none
+    outline: none
+    padding: 0
+
+.user-form__field-caption
+  display: block
+  margin-top: -0.75rem
+  font-size: var(--sFontSize)
+  text-decoration: underline
+
+  &:hover
+    color: var(--color1)
+
+.user-form__submit
+  text-align: right
+
+.form-links
+  margin-top: 1rem
+  text-align: center
+  color: var(--gray)
+  font-size: var(--sFontSize)
+
+  a
+    color: var(--gray)
+    text-decoration: underline

@@ -1,13 +1,22 @@
 <script setup>
-import { defineAsyncComponent, onMounted } from 'vue';
+import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useUserStore } from '@/user/stores-user';
+
+import Layout from '@/Layout.vue'; // this is preloaded to make transition smooth
+import LayoutLogin from '@/LayoutLogin.vue';
 
 const route = useRoute();
 
 const getLayout = () => {
-  const layout = route.meta.layout || '';
-  return defineAsyncComponent(() => import(`./Layout${layout}.vue`));
+  switch (route.meta.layout) {
+    case 'LayoutLogin':
+      return LayoutLogin;
+      // return defineAsyncComponent(() => import('./LayoutLogin.vue'));
+
+    default:
+      return Layout;
+  }
 };
 
 // Validate API token for every refresh

@@ -1,7 +1,7 @@
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { defineStore } from 'pinia';
-import { authApi } from '@/user/helpers-user';
+import { authApi, api } from '@/user/helpers-user';
 
 export const useUserStore = defineStore('user', () => {
   const router = useRouter();
@@ -84,6 +84,30 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
+  /**
+   * User registration
+   */
+  async function register(fields) {
+    try {
+      const response = await api.post('/register', fields);
+
+      return {
+        status: response.status,
+      };
+    } catch (error) {
+      return {
+        status: error.response.status,
+        code: error.response.data.code,
+        message: error.response.data.message,
+      };
+    }
+  }
+
+  async function getRegisterNonce() {
+    const response = await api.get('/register/nonce');
+    return response.data;
+  }
+
   return {
     token,
     email,
@@ -93,6 +117,8 @@ export const useUserStore = defineStore('user', () => {
     login,
     logout,
     validateToken,
+    register,
+    getRegisterNonce,
   };
 });
 
