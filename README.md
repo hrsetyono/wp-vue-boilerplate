@@ -72,12 +72,12 @@ The Login form requires these steps to work:
 
 ## Register and Forgot Password
 
-WordPress doesn't have native APIs for Register and Forgot Password. So we need to implement it on our own:
+WordPress doesn't have native APIs for Register and Forgot Password. So we need to implement them on our own.
+
+Check out the sample code from our Wiki. This boilerplate works out-of-the-box with these samples:
 
 - [Register API](https://github.com/hrsetyono/wp-vue-boilerplate/wiki/API-%E2%80%93-User-Register)
 - [Forgot Password API](https://github.com/hrsetyono/wp-vue-boilerplate/wiki/API-%E2%80%93-Forgot-Password)
-
-This boilerplate works out of the box with the sample API above.
 
 ## SVG Loader
 
