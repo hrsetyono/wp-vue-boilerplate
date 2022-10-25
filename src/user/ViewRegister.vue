@@ -1,13 +1,11 @@
 <script setup>
-import { ref, onMounted, defineEmits } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/user/stores-user';
 
 const router = useRouter();
 const userStore = useUserStore();
 const emit = defineEmits(['message', 'loading']);
-
-const isLoading = ref(false);
 
 const fields = ref({
   first_name: '',
@@ -65,7 +63,7 @@ const register = async () => {
       break;
 
     default:
-      emit('message', 'Connection error. Is your internet fine?');
+      emit('message', response.message);
   }
 };
 

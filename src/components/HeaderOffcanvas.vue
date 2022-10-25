@@ -1,6 +1,6 @@
 <script setup>
 import { useUIStore } from '@/stores-ui';
-import { useUserStore } from '@/user/stores-user';
+import { useAuthStore } from '@/user/stores-auth';
 
 import HouseSVG from '@/svg/house.svg';
 import UserSVG from '@/svg/user.svg';
@@ -11,7 +11,12 @@ import YoutubeSVG from '@/svg/social-youtube.svg';
 import TwitterSVG from '@/svg/social-twitter.svg';
 
 const uiStore = useUIStore();
-const userStore = useUserStore();
+const authStore = useAuthStore();
+
+const logout = () => {
+  uiStore.closeOffcanvas();
+  authStore.logout();
+};
 </script>
 
 <template>
@@ -45,7 +50,7 @@ const userStore = useUserStore();
 
         <ul class="offcanvas__nav is-aligned-bottom">
           <li>
-            <a @click="userStore.logout">
+            <a @click="logout">
               <PowerOffSVG />
               <span>Logout</span>
             </a>

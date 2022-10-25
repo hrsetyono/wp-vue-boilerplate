@@ -1,6 +1,7 @@
 <script setup>
-import { ref, onBeforeMount } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useContentStore } from '@/stores-content';
+import { useAuthStore } from '@/user/stores-auth';
 
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import HeaderMain from '@/components/HeaderMain.vue';
@@ -9,9 +10,13 @@ import HeaderOffcanvas from '@/components/HeaderOffcanvas.vue';
 const contentStore = useContentStore();
 const isLoading = ref(true);
 
-onBeforeMount(async () => {
-  await contentStore.queryPosts();
-  isLoading.value = false;
+onMounted(async () => {
+  const authStore = useAuthStore();
+
+  if (authStore.isLoggedIn) {
+    await contentStore.queryPosts();
+    isLoading.value = false;
+  }
 });
 
 </script>

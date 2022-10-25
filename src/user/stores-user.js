@@ -1,88 +1,10 @@
-import { ref, computed } from 'vue';
-import { useRouter } from 'vue-router';
 import { defineStore } from 'pinia';
-import { authApi, api } from '@/user/helpers-user';
+import { useRouter, useRoute } from 'vue-router';
+import { api } from '@/user/helpers-user';
 
 export const useUserStore = defineStore('user', () => {
   const router = useRouter();
-
-  const token = ref(localStorage.getItem('userToken'));
-  const email = ref(localStorage.getItem('userEmail'));
-  const displayName = ref(localStorage.getItem('userDisplayName'));
-
-  const isLoggedIn = computed(() => !!token.value);
-
-  /**
-   * Login user and cache the profile data
-   */
-  async function login(username, password) {
-    try {
-      const response = await authApi.post('/token', {
-        username,
-        password,
-      });
-
-      // cache the data into store
-      token.value = response.data.token;
-      email.value = response.data.user_email;
-      displayName.value = response.data.user_display_name;
-
-      // cache the data into localStorage
-      localStorage.setItem('userToken', response.data.token);
-      localStorage.setItem('userEmail', response.data.user_email);
-      localStorage.setItem('userDisplayName', response.data.user_display_name);
-
-      return {
-        status: response.status,
-        message: 'Login success, redirecting back…',
-      };
-    } catch (error) {
-      return {
-        status: error.response.status,
-        message: error.response.data.message,
-      };
-    }
-  }
-
-  /**
-   * Logout user and clear all cache
-   */
-  function logout() {
-    token.value = '';
-    localStorage.removeItem('userToken');
-
-    router.push({
-      name: 'login',
-      query: { message: 'You have successfully logged out' },
-    });
-  }
-
-  /**
-   * Check whether the token is still valid or need to login again
-   */
-  async function validateToken() {
-    if (!token.value) {
-      return;
-    }
-
-    try {
-      const headers = {
-        Authorization: `Bearer ${token.value}`,
-      };
-
-      await authApi.post('/token/validate', {}, { headers });
-      // If token is valid, do nothing
-    } catch (error) {
-      // If invalid, push back to login
-      token.value = '';
-      localStorage.removeItem('userToken');
-
-      router.push({
-        name: 'login',
-        query: { message: 'Your session has expired. Please login again.' },
-      });
-    }
-  }
+  const route = useRoute();
 
   /**
    * User registration
@@ -97,28 +19,81 @@ export const useUserStore = defineStore('user', () => {
     } catch (error) {
       return {
         status: error.response.status,
-        code: error.response.data.code,
-        message: error.response.data.message,
+        code: error.response.data
+          ? error.response.data.code
+          : '',
+        message: error.response.data
+          ? error.response.data.message
+          : 'Connection Error. If your internet is fine, then there is a server issue.',
       };
     }
   }
 
+  /**
+   * Get a nonce for validating submitted form
+   */
   async function getRegisterNonce() {
     const response = await api.get('/register/nonce');
     return response.data;
   }
 
-  return {
-    token,
-    email,
-    displayName,
-    isLoggedIn,
+  /**
+   * Send a password reset email
+   */
+  async function forgotPassword(email) {
+    try {
+      const response = await api.post('/password/forgot', {
+        email,
+        reset_url: window.location.origin + router.resolve({ name: 'passwordReset' }).fullPath,
+      });
 
-    login,
-    logout,
-    validateToken,
+      return {
+        status: response.status,
+        message: response.data.message,
+      };
+    } catch (error) {
+      return {
+        status: error.response.status,
+        message: error.response.data
+          ? error.response.data.message
+          : 'Connection Error. If your internet is fine, then there is a server issue.',
+      };
+    }
+  }
+
+  /**
+   * Reset the password
+   */
+  async function resetPassword(pass, passConfirm) {
+    try {
+      const response = await api.post('/password/reset', {
+        user_pass: pass,
+        user_pass_confirm: passConfirm,
+        key: route.query.key,
+        username: route.query.username,
+      });
+      console.log(response);
+      return {
+        status: response.status,
+        message: response.data.message,
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        status: error.response.status,
+        message: error.response.data
+          ? error.response.data.message
+          : 'Connection Error. If your internet is fine, then there is a server issue.',
+      };
+    }
+  }
+
+  return {
     register,
     getRegisterNonce,
+
+    forgotPassword,
+    resetPassword,
   };
 });
 

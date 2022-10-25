@@ -1,12 +1,13 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
-const urlRoute = useRoute();
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
 
-const message = ref(urlRoute.query.message);
-const messageType = ref(urlRoute.query.messageType || 'alert');
+const _route = useRoute();
 
+const message = ref(_route.query.message);
+const messageType = ref(_route.query.messageType || 'alert');
 const isLoading = ref(false);
 
 const updateToast = (newMessage, newMessageType) => {
@@ -17,6 +18,11 @@ const updateToast = (newMessage, newMessageType) => {
 const updateLoading = (newState) => {
   isLoading.value = newState;
 };
+
+watch(_route, (newRoute) => {
+  message.value = newRoute.query.message || '';
+  messageType.value = newRoute.query.messageType || 'alert';
+});
 </script>
 
 <template>

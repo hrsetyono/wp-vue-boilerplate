@@ -1,8 +1,9 @@
 <script setup>
-import { ref, defineEmits } from 'vue';
-import { api } from '@/user/helpers-user';
+import { ref } from 'vue';
+import { useUserStore } from '@/user/stores-user';
 
 const emit = defineEmits(['message', 'loading']);
+const userStore = useUserStore();
 
 const email = ref('');
 
@@ -11,27 +12,21 @@ const email = ref('');
  */
 const forgotPassword = async () => {
   emit('loading', true);
-
-  const response = await api.post('/password/forgot', {
-    email,
-  });
-
+  const response = await userStore.forgotPassword(email.value);
   emit('loading', false);
 
   switch (response.status) {
     // if working
     case 200:
-      emit('message', response.data.message, 'good');
+      emit('message', response.message, 'good');
+      email.value = '';
       break;
 
     // if error
     case 403:
     case 500:
-      emit('message', response.data.message);
-      break;
-
     default:
-      emit('message', 'Connection error. Is your internet fine?');
+      emit('message', response.message);
   }
 };
 </script>

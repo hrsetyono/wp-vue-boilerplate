@@ -1,4 +1,4 @@
-import { useUserStore } from '@/user/stores-user';
+import { useAuthStore } from '@/user/stores-auth';
 
 import ViewLogin from '@/user/ViewLogin.vue';
 import ViewRegister from '@/user/ViewRegister.vue';
@@ -52,7 +52,7 @@ export const userRoutes = [
  * Get route args depending on auth state
  */
 export const getNextRoute = (to) => {
-  const userStore = useUserStore();
+  const authStore = useAuthStore();
 
   // if allow guest, no need to check for loggedIn status
   if (to.meta.allowGuest) {
@@ -60,7 +60,7 @@ export const getNextRoute = (to) => {
   }
 
   // if not logged in
-  if (!userStore.isLoggedIn) {
+  if (!authStore.isLoggedIn) {
     return {
       name: 'login',
       query: {

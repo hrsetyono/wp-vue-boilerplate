@@ -53,33 +53,35 @@ List of packages:
     </IfModule>
     ```
 
-## SRC Structure
+## Login
 
-**FILES**:
+The Login form requires these steps to work:
 
-- `main.js` - The entry point to declare the Vue app.
+1. Install [JWT Authentication](https://wordpress.org/plugins/jwt-authentication-for-wp-rest-api/) plugin.
 
-- `App.vue` - The main layout containing common elements such as Header and Footer.
+1. Add this to wp-config:
 
-- `router.js` - Handles URL routing.
+    ```php
+    define('JWT_AUTH_CORS_ENABLE', true);
+    define('JWT_AUTH_SECRET_KEY', 'any-salted-hash');
+    ```
 
-- `helpers.js` - Reusable functions. Currently only containing `wpApi` (for native API) and `api` (for custom API).
+    Pick any of the salted hash from here: https://api.wordpress.org/secret-key/1.1/salt/
 
-- `style.sass` - Global stylesheet, containing mainly Gutenberg styles and CSS Vars
+1. Done!
 
-**FOLDERS**:
+## Register and Forgot Password
 
-- `/components` - Reusable elements.
+WordPress doesn't have native APIs for Register and Forgot Password. So we need to implement it on our own:
 
-- `/stores` - Manages global variables and functions using Pinia.
+- [Register API](https://github.com/hrsetyono/wp-vue-boilerplate/wiki/API-%E2%80%93-User-Register)
+- [Forgot Password API](https://github.com/hrsetyono/wp-vue-boilerplate/wiki/API-%E2%80%93-Forgot-Password)
 
-- `/views` - Templates for each route.
+This boilerplate works out of the box with the sample API above.
 
-- `/css` - Partial stylesheets that are combined into `style.sass`. The `_helpers.sass` contains reusable mixins, import it to use it within Vue.
+## SVG Loader
 
-- `/fonts` - Webfonts that are declared as @font-face in `style.sass`.
-
-- `/svg` - SVG files that can be imported into component or used as background in CSS
+You can import SVG into a component like this:
 
     ```js
     <script setup>
@@ -103,115 +105,3 @@ List of packages:
         background-size: 1rem 1rem
     </style>
     ```
-
-## Login Authentication
-
-1. Install this plugin: [JWT Authentication](https://wordpress.org/plugins/jwt-authentication-for-wp-rest-api/)
-
-1. Add this to wp-config:
-
-    ```php
-    define('JWT_AUTH_CORS_ENABLE', true);
-    define('JWT_AUTH_SECRET_KEY', 'any-salted-hash');
-    ```
-
-    Pick any of the salted hash from here: https://api.wordpress.org/secret-key/1.1/salt/
-
-1. Done!
-
-If you **don't need a login feature**, delete these:
-
-- `/user` folder
-- `/LayoutLogin.vue`
-
-And remove login-related code in these files:
-
-- `/router.js`
-- `/App.vue`
-- `/helpers.js`
-- `/components/HeaderMain.vue`
-- `/components/HeaderOffcanvas.vue`
-
-## Custom API Endpoint
-
-### PUBLIC API
-
-No login required.
-
-```php
-// GET https://mysite.com/wp-json/my/v1/example-get/:id
-
-register_rest_route('my/v1', '/example-get/(?P<id>\d+)', [
-  'methods' => 'GET',
-  'permission_callback' => '__return_true',
-  'callback' => function($params) {
-    $id = $params['id'];
-    return "You passed in ID: {$id}";
-  }
-]);
-```
-
-### PRIVATE API
-
-Require login. This API call will be rejected if you didn't pass in the JWT Access token in Header.
-
-Check out `/helpers.js` where we implement adding the token.
-
-```php
-// POST https://mysite.com/wp-json/my/v1/example-post/:id
-
-register_rest_route('my/v1', '/example-post/(?P<id>\d+)', [
-  'methods' => 'POST',
-  'permission_callback' => function() {
-    return is_user_logged_in();
-  },
-  'callback' => function($request) {
-    $params = $request->get_params($request);
-    $params = wp_parse_args($params, [
-      'id' => 0,
-      'data1' => 'default value',
-      'data2' => 'default value',
-    ]);
-
-    return $params;
-  }
-]);
-```
-
-### ⚠️ WARNING: Permission != Validation
-
-A User with "Author" role should only be able to edit his/her own posts. But in API callback, they can edit everyone's post!
-
-```php
-'callback' => function($request) {
-  $params = $request->get_params($request);
-
-  // This works on everyone's post, NOT GOOD!
-  wp_update_post([
-    'ID' => $params['id'],
-    'post_title' => 'Just Edited!',
-  ]);
-}
-```
-
-That means we need to add a conditional like this:
-
-```php
-'callback' => function($request) {
-  $params = $request->get_params($request);
-  $current_user = wp_get_current_user();
-
-  $is_not_author = $post->post_author !== $current_user->ID;
-  $can_edit_others = current_user_can('edit_others_posts');
-
-  // If not author OR cannot edit others
-  if (!$is_not_author || !$can_edit_others) {
-    return new WP_Error('edit_not_allowed', 'You are not allowed to edit other\'s post');
-  }
-
-  wp_update_post([
-    'ID' => $params['id'],
-    'post_title' => 'Just Edited!',
-  ]);
-}
-```

@@ -1,11 +1,11 @@
 <script setup>
-import { ref, defineEmits } from 'vue';
+import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useUserStore } from '@/user/stores-user';
+import { useAuthStore } from '@/user/stores-auth';
 
 const route = useRoute();
 const router = useRouter();
-const userStore = useUserStore();
+const authStore = useAuthStore();
 const emit = defineEmits(['message', 'loading']);
 
 const email = ref('');
@@ -16,7 +16,7 @@ const password = ref('');
  */
 const login = async () => {
   emit('loading', true);
-  const response = await userStore.login(email.value, password.value);
+  const response = await authStore.login(email.value, password.value);
   emit('loading', false);
 
   switch (response.status) {
@@ -32,11 +32,8 @@ const login = async () => {
     // if error
     case 403:
     case 500:
-      emit('message', response.message);
-      break;
-
     default:
-      emit('message', 'Connection error. Is your internet fine?');
+      emit('message', response.message);
   }
 };
 </script>
