@@ -26,7 +26,7 @@ defineProps({
       <!-- eslint-disable-next-line vue/no-v-html -->
       <dd class="wp-block-latest-posts__post-excerpt" v-html="p.excerpt.rendered" />
       <time class="wp-block-latest-posts__post-date">
-        {{ p.date }}
+        {{ p.date_formatted }}
       </time>
     </li>
   </ul>

@@ -42,10 +42,10 @@ const login = async () => {
   <section>
     <form class="user-form" @submit.prevent="login">
       <label class="user-form__field">
-        <span>Email</span>
+        <span>Email or Username</span>
         <input
           v-model="email"
-          type="email"
+          type="text"
         >
       </label>
       <label class="user-form__field">

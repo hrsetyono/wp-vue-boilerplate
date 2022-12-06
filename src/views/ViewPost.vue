@@ -3,6 +3,8 @@ import { useRoute } from 'vue-router';
 import { ref, onMounted, watch } from 'vue';
 import { useContentStore } from '@/stores-content';
 
+import CommentSection from '@/components/CommentSection.vue';
+
 const route = useRoute();
 const contentStore = useContentStore();
 const post = ref();
@@ -14,11 +16,12 @@ const onReady = () => {
 
   if (index < 0) { return; }
 
-  const nextIndex = index === 0 ? null : index + 1;
-  const prevIndex = index === contentStore.posts.length - 1 ? null : index - 1;
-
   post.value = contentStore.posts[index];
   document.title = document.title.replace(route.meta.title, post.value.title.rendered);
+
+  // Get next and prev post
+  const nextIndex = index === 0 ? null : index + 1;
+  const prevIndex = index === contentStore.posts.length - 1 ? null : index - 1;
 
   if (nextIndex) {
     nextPost.value = contentStore.posts[nextIndex];
@@ -37,10 +40,10 @@ onMounted(onReady);
   <section v-if="post" class="post">
     <header class="wp-block-group | post__header">
       <div class="wp-block-group__inner-container">
-        <div class="wp-block-columns alignwide">
+        <div class="wp-block-columns alignwide is-vertically-aligned-center">
           <div class="wp-block-column">
             <h1>{{ post.title.rendered }}</h1>
-            <time>{{ post.date }}</time>
+            <time>{{ post.date_formatted }}</time>
           </div>
           <div
             v-if="post._embedded['wp:featuredmedia']"
@@ -58,7 +61,7 @@ onMounted(onReady);
     <!-- eslint-disable-next-line vue/no-v-html -->
     <main v-html="post.content.rendered" />
 
-    <footer class="post__nav">
+    <nav class="post__nav">
       <router-link v-if="prevPost" :to="`/post/${prevPost.slug}`">
         <label>« Previous Post</label>
         <h6>{{ prevPost.title.rendered }}</h6>
@@ -68,7 +71,9 @@ onMounted(onReady);
         <label>Next Post »</label>
         <h6>{{ nextPost.title.rendered }}</h6>
       </router-link>
-    </footer>
+    </nav>
+
+    <CommentSection :post-id="post.id" />
   </section>
   <section v-else class="post-not-found">
     <h2>
@@ -88,7 +93,7 @@ onMounted(onReady);
 
   time
     display: block
-    margin-top: var(--blockSpacing)
+    margin-top: 0
 
   figure
     position: relative

@@ -72,13 +72,12 @@ export const useUserStore = defineStore('user', () => {
         key: route.query.key,
         username: route.query.username,
       });
-      console.log(response);
+
       return {
         status: response.status,
         message: response.data.message,
       };
     } catch (error) {
-      console.log(error);
       return {
         status: error.response.status,
         message: error.response.data

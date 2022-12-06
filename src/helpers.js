@@ -9,7 +9,7 @@ const wpApi = axios.create({
 });
 
 // If logged in, add Authentication Header to the API call
-const token = localStorage.getItem('token');
+const token = localStorage.getItem('userToken');
 if (token) {
   const addTokenHeader = (config) => {
     config.headers.Authorization = token ? `Bearer ${token}` : '';

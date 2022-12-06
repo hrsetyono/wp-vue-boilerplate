@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import { userRoutes, getNextRoute } from '@/user/router-user';
+import { userRoutes, checkUserAuth } from '@/user/router-user';
 
 import ViewHome from '@/views/ViewHome.vue';
 import ViewPage from '@/views/ViewPage.vue';
@@ -44,11 +44,11 @@ const router = createRouter({
         allowGuest: true,
       },
     },
-    ...userRoutes,
+    ...userRoutes, // remove this if no login
   ],
 
   scrollBehavior: async (to) => {
-    // If the link is hash, scroll smoothly there
+    // If the link is hash, scroll smoothly
     if (to.hash) {
       return {
         el: to.hash,
@@ -64,7 +64,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   document.title = `${to.meta.title} | My Project`;
 
-  next(getNextRoute(to));
+  next(checkUserAuth(to)); // remove this if no login
   // next();
 });
 

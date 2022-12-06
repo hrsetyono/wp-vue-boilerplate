@@ -14,7 +14,7 @@ onMounted(async () => {
   const authStore = useAuthStore();
 
   if (authStore.isLoggedIn) {
-    await contentStore.queryPosts();
+    await contentStore.getPosts();
     isLoading.value = false;
   }
 });

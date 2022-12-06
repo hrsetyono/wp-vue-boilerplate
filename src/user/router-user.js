@@ -51,7 +51,7 @@ export const userRoutes = [
 /**
  * Get route args depending on auth state
  */
-export const getNextRoute = (to) => {
+export const checkUserAuth = (to) => {
   const authStore = useAuthStore();
 
   // if allow guest, no need to check for loggedIn status

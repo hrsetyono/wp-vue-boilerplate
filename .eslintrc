@@ -20,6 +20,7 @@
     "max-len": 0,
     "linebreak-style": 0,
     "no-alert": "off",
+    "no-underscore-dangle": "off",
     "no-param-reassign": [2, { "props": false }],
     "prefer-destructuring": [
       "error",

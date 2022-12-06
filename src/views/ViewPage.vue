@@ -13,8 +13,11 @@ const isLoading = ref(true);
 
 const onReady = async () => {
   isLoading.value = true;
-  page.value = await contentStore.queryPage(route.params.slug);
+
+  // API call to get page content
+  page.value = await contentStore.getPage(route.params.slug);
   document.title = document.title.replace(route.meta.title, page.value.title.rendered);
+
   isLoading.value = false;
 };
 
