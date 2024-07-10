@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { useUserStore } from '@/user/stores-user';
+import { useUserStore } from './stores-user';
 
 const emit = defineEmits(['message', 'loading']);
 const userStore = useUserStore();
@@ -61,6 +61,6 @@ const forgotPassword = async () => {
 </template>
 
 <style lang="sass" scoped>
-@import "@/css/helpers"
+@import "@assets/helpers"
 @import "@/user/user"
 </style>

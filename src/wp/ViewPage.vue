@@ -2,11 +2,11 @@
 import { useRoute } from 'vue-router';
 import { ref, watch, onBeforeMount } from 'vue';
 
-import { useContentStore } from '@/stores-content';
-import LoadingSpinner from '@/components/LoadingSpinner.vue';
+import { useWpStore } from './stores-wp';
+import LoadingSpinner from '@components/LoadingSpinner.vue';
 
 const route = useRoute();
-const contentStore = useContentStore();
+const wpStore = useWpStore();
 
 const page = ref();
 const isLoading = ref(true);
@@ -15,7 +15,7 @@ const onReady = async () => {
   isLoading.value = true;
 
   // API call to get page content
-  page.value = await contentStore.getPage(route.params.slug);
+  page.value = await wpStore.getPage(route.params.slug);
   document.title = document.title.replace(route.meta.title, page.value.title.rendered);
 
   isLoading.value = false;

@@ -14,12 +14,12 @@ defineProps({
       :key="`post-${p.id}`"
     >
       <figure v-if="p._embedded['wp:featuredmedia']" class="wp-block-latest-posts__featured-image">
-        <router-link :to="`/post/${p.slug}`">
+        <router-link :to="{name: 'post', params: { slug: p.slug }}">
           <img :src="p._embedded['wp:featuredmedia'][0].source_url">
         </router-link>
       </figure>
 
-      <router-link :to="`/post/${p.slug}`">
+      <router-link :to="{name: 'post', params: { slug: p.slug }}">
         {{ p.title.rendered }}
       </router-link>
 
@@ -33,6 +33,6 @@ defineProps({
 </template>
 
 <style lang="sass" scoped>
-@import '../css/helpers'
+@import '@assets/helpers'
 
 </style>

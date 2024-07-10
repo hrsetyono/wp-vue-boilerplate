@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { useRouter, useRoute } from 'vue-router';
-import { api } from '@/user/helpers-user';
+import { myFetch } from '@lib/MyFetch';
 
 export const useUserStore = defineStore('user', () => {
   const router = useRouter();
@@ -11,7 +11,7 @@ export const useUserStore = defineStore('user', () => {
    */
   async function register(fields) {
     try {
-      const response = await api.post('/register', fields);
+      const response = await myFetch.post('/register', fields);
 
       return {
         status: response.status,
@@ -24,7 +24,7 @@ export const useUserStore = defineStore('user', () => {
           : '',
         message: error.response.data
           ? error.response.data.message
-          : 'Connection Error. If your internet is fine, then there is a server issue.',
+          : 'connectionError',
       };
     }
   }
@@ -33,7 +33,7 @@ export const useUserStore = defineStore('user', () => {
    * Get a nonce for validating submitted form
    */
   async function getRegisterNonce() {
-    const response = await api.get('/register/nonce');
+    const response = await myFetch.get('/register/nonce');
     return response.data;
   }
 
@@ -42,7 +42,7 @@ export const useUserStore = defineStore('user', () => {
    */
   async function forgotPassword(email) {
     try {
-      const response = await api.post('/password/forgot', {
+      const response = await myFetch.post('/password/forgot', {
         email,
         reset_url: window.location.origin + router.resolve({ name: 'passwordReset' }).fullPath,
       });
@@ -56,7 +56,7 @@ export const useUserStore = defineStore('user', () => {
         status: error.response.status,
         message: error.response.data
           ? error.response.data.message
-          : 'Connection Error. If your internet is fine, then there is a server issue.',
+          : 'connectionError',
       };
     }
   }
@@ -66,7 +66,7 @@ export const useUserStore = defineStore('user', () => {
    */
   async function resetPassword(pass, passConfirm) {
     try {
-      const response = await api.post('/password/reset', {
+      const response = await myFetch.post('/password/reset', {
         user_pass: pass,
         user_pass_confirm: passConfirm,
         key: route.query.key,
@@ -82,7 +82,7 @@ export const useUserStore = defineStore('user', () => {
         status: error.response.status,
         message: error.response.data
           ? error.response.data.message
-          : 'Connection Error. If your internet is fine, then there is a server issue.',
+          : 'connectionError',
       };
     }
   }

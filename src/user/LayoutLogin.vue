@@ -1,17 +1,17 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { useRoute } from 'vue-router';
 
-import LoadingSpinner from '@/components/LoadingSpinner.vue';
+import LoadingSpinner from '@components/LoadingSpinner.vue';
 
 const _route = useRoute();
 
-const message = ref(_route.query.message);
+const message = ref(_parseRouteMessage(_route.query.message));
 const messageType = ref(_route.query.messageType || 'alert');
 const isLoading = ref(false);
 
 const updateToast = (newMessage, newMessageType) => {
-  message.value = newMessage;
+  message.value = _parseRouteMessage(newMessage);
   messageType.value = newMessageType || 'alert';
 };
 
@@ -20,9 +20,43 @@ const updateLoading = (newState) => {
 };
 
 watch(_route, (newRoute) => {
-  message.value = newRoute.query.message || '';
+  message.value = _parseRouteMessage(newRoute.query.message);
   messageType.value = newRoute.query.messageType || 'alert';
 });
+
+/**
+ * Parse the 'message' code in query params into a helpful message
+ */
+function _parseRouteMessage(code) {
+  switch (code) {
+    case 'loginSuccess':
+      return 'Login success, redirecting back…';
+
+    case 'logoutSuccess':
+      return 'You have successfully logged out';
+
+    case 'registerSuccess':
+      return 'You can now login with your new account';
+
+    case 'loginRequired':
+      return 'Please login to view that page';
+
+    case 'connectionError':
+      return 'Connection Error. If your internet is fine, then there is a server issue.';
+
+    case 'sessionExpired':
+      return 'Your session has expired. Please login again.';
+
+    case 'usernameEmpty':
+      return 'Username must be filled';
+
+    case 'passwordEmpty':
+      return 'Password must be filled';
+
+    default:
+      return code || '';
+  }
+}
 </script>
 
 <template>

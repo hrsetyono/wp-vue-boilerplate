@@ -1,6 +1,6 @@
 <script setup>
 import { useUIStore } from '@/stores-ui';
-import MenuSVG from '@/svg/menu.svg';
+import MenuSVG from './svg/menu.svg';
 
 const uiStore = useUIStore();
 </script>

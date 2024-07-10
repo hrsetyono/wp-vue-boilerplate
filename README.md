@@ -21,6 +21,11 @@ List of packages:
 - ESLint Airbnb
 - Sass
 
+Recommended packages if you need it:
+
+- Airdatepicker
+- Slick
+
 ## How to Use
 
 1. Install all packages:
@@ -62,7 +67,7 @@ List of packages:
 
 The Login form requires these steps to work:
 
-1. Install [JWT Authentication](https://wordpress.org/plugins/jwt-authentication-for-wp-rest-api/) plugin.
+1. Install [JWT Authentication](https://wordpress.org/plugins/jwt-authentication-for-wp-rest-api/) plugin. Last tested working on version 1.3.4.
 
 1. Add this to wp-config:
 
@@ -90,11 +95,9 @@ If your app doesn't need login or register feature, do these:
 
 - Open `router.js` and remove all references from `router-user.js`.
 - Open `App.vue` and remove all LayoutLogin references.
-- Open `Layout.vue` and remove all references from `stores-auth.js`.
 - Open `components/HeaderOffcanvas.vue` and remove all Logout references.
-- Open `helpers.js` and remove the code that added the token to Header.
-- Delete `user` folder.
-- Delete `LayoutLogin.vue`.
+- Open `_lib/MyFetch.js` and remove the headers code that check for userToken.
+- Delete `/user` folder.
 
 ## SVG Loader
 

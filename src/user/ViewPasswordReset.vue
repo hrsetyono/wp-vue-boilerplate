@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { useUserStore } from '@/user/stores-user';
+import { useUserStore } from './stores-user';
 
 const emit = defineEmits(['message', 'loading']);
 const router = useRouter();
@@ -99,6 +99,6 @@ const resetPassword = async () => {
 </template>
 
 <style lang="sass" scoped>
-@import "@/css/helpers"
+@import "@assets/helpers"
 @import "@/user/user"
 </style>

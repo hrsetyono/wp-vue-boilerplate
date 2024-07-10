@@ -67,7 +67,6 @@ $filters: (
 [class*="-background-color"] {
   background-color: var(--bgColor);
 }
-
 .has-text-color,
 .has-inline-color {
   color: var(--textColor, var(--text));
@@ -78,13 +77,14 @@ $filters: (
   $slug: map-get($c, 'slug');
   $filter: map-get($filters, $slug);
 
-  .has-#{ $slug }-background-color {
-    --bgColor: var(#{ $var });
-    --bgColorRGB: var(#{ $var }RGB);
+  .has-#{$slug}-background-color {
+    --bgColor: var(#{$var});
+    --bgColorRGB: var(#{$var}RGB);
+    --filterBg: var(#{$var}Filter);
   }
-  .has-#{ $slug }-color {
-    --textColor: var(#{ $var });
-    --textColorRGB: var(#{ $var }RGB);
-    --filterColor: #{$filter};
+  .has-#{$slug}-color {
+    --textColor: var(#{$var});
+    --textColorRGB: var(#{$var}RGB);
+    --filterColor: var(#{$var}Filter);
   }
 }

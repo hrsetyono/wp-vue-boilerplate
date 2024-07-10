@@ -1,7 +1,7 @@
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { defineStore } from 'pinia';
-import { authApi } from '@/user/helpers-user';
+import { authFetch } from '@lib/MyFetch';
 
 export const useAuthStore = defineStore('auth', () => {
   const router = useRouter();
@@ -16,32 +16,38 @@ export const useAuthStore = defineStore('auth', () => {
    * Login user and cache the profile data
    */
   async function login(username, password) {
+    if (!username) {
+      return { message: 'usernameEmpty' };
+    }
+
+    if (!password) {
+      return { message: 'passwordEmpty' };
+    }
+
     try {
-      const response = await authApi.post('/token', {
+      const response = await authFetch.post('/token', {
         username,
         password,
       });
 
       // cache the data into store
-      token.value = response.data.token;
-      email.value = response.data.user_email;
-      displayName.value = response.data.user_display_name;
+      token.value = response.token;
+      email.value = response.user_email;
+      displayName.value = response.user_display_name;
 
       // cache the data into localStorage
-      localStorage.setItem('userToken', response.data.token);
-      localStorage.setItem('userEmail', response.data.user_email);
-      localStorage.setItem('userDisplayName', response.data.user_display_name);
+      localStorage.setItem('userToken', response.token);
+      localStorage.setItem('userEmail', response.user_email);
+      localStorage.setItem('userDisplayName', response.user_display_name);
 
       return {
-        status: response.status,
-        message: 'Login success, redirecting back…',
+        status: 200,
+        message: 'loginSuccess',
       };
     } catch (error) {
       return {
-        status: error.response.status,
-        message: error.response.data
-          ? error.response.data.message
-          : 'Connection Error. If your internet is fine, then there is a server issue.',
+        status: error.status,
+        message: error.message || 'connectionError',
       };
     }
   }
@@ -55,7 +61,7 @@ export const useAuthStore = defineStore('auth', () => {
 
     router.push({
       name: 'login',
-      query: { message: 'You have successfully logged out' },
+      query: { message: 'logoutSuccess' },
     });
   }
 
@@ -68,12 +74,8 @@ export const useAuthStore = defineStore('auth', () => {
     }
 
     try {
-      const headers = {
-        Authorization: `Bearer ${token.value}`,
-      };
-
-      await authApi.post('/token/validate', {}, { headers });
-      // If token is valid, do nothing
+      // if valid, nothing happen, if invalid it will throw error
+      await authFetch.post('/token/validate');
     } catch (error) {
       // If invalid, push back to login
       token.value = '';
@@ -81,7 +83,7 @@ export const useAuthStore = defineStore('auth', () => {
 
       router.push({
         name: 'login',
-        query: { message: 'Your session has expired. Please login again.' },
+        query: { message: 'sessionExpired' },
       });
     }
   }

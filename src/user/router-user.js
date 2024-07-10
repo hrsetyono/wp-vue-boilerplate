@@ -1,9 +1,9 @@
-import { useAuthStore } from '@/user/stores-auth';
+import { useAuthStore } from './stores-auth';
 
-import ViewLogin from '@/user/ViewLogin.vue';
-import ViewRegister from '@/user/ViewRegister.vue';
-import ViewPasswordForgot from '@/user/ViewPasswordForgot.vue';
-import ViewPasswordReset from '@/user/ViewPasswordReset.vue';
+import ViewLogin from './ViewLogin.vue';
+import ViewRegister from './ViewRegister.vue';
+import ViewPasswordForgot from './ViewPasswordForgot.vue';
+import ViewPasswordReset from './ViewPasswordReset.vue';
 
 export const userRoutes = [
   {
@@ -65,7 +65,7 @@ export const checkUserAuth = (to) => {
       name: 'login',
       query: {
         redirectTo: to.fullPath,
-        message: 'Please login to view that page',
+        message: 'loginRequired',
       },
     };
   }

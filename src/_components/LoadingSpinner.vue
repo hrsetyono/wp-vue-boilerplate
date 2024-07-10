@@ -2,9 +2,8 @@
 </script>
 
 <template>
-  <!-- GIF generated from icons8.com -->
   <div class="loading">
-    <img src="/images/loading.gif">
+    <span />
   </div>
 </template>
 
@@ -22,7 +21,19 @@
   width: 100%
   background-color: rgba(black, .5)
 
-  img
+  span
     width: 3rem
-    border-radius: var(--largeRadius)
+    height: 3rem
+    border: 5px solid #FFF
+    border-bottom-color: transparent
+    border-radius: 50%
+    display: inline-block
+    box-sizing: border-box
+    animation: loadingSpinner 1s linear infinite
+
+@keyframes loadingSpinner
+  0%
+    transform: rotate(0deg)
+  100%
+      transform: rotate(360deg)
 </style>

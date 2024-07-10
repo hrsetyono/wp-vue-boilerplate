@@ -1,24 +1,14 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useContentStore } from '@/stores-content';
-import { useAuthStore } from '@/user/stores-auth';
+import { ref } from 'vue';
 
-import LoadingSpinner from '@/components/LoadingSpinner.vue';
-import HeaderMain from '@/components/HeaderMain.vue';
-import HeaderOffcanvas from '@/components/HeaderOffcanvas.vue';
+import LoadingSpinner from '@components/LoadingSpinner.vue';
+import HeaderMain from './_HeaderMain.vue';
+import HeaderOffcanvas from './_HeaderOffcanvas.vue';
 
-const contentStore = useContentStore();
-const isLoading = ref(true);
-
-onMounted(async () => {
-  const authStore = useAuthStore();
-
-  if (authStore.isLoggedIn) {
-    await contentStore.getPosts();
-    isLoading.value = false;
-  }
-});
-
+const isLoading = ref(false);
+const updateLoading = (newState) => {
+  isLoading.value = newState;
+};
 </script>
 
 <template>
@@ -27,7 +17,11 @@ onMounted(async () => {
     <HeaderOffcanvas />
 
     <LoadingSpinner v-if="isLoading" />
-    <router-view v-else v-slot="{ Component, route }">
+
+    <router-view
+      v-slot="{ Component, route }"
+      @loading="updateLoading"
+    >
       <Transition
         name="fade"
         mode="out-in"
@@ -44,6 +38,7 @@ onMounted(async () => {
   position: relative
   max-width: 1200px
   margin: 0 auto
+  padding-bottom: var(--blockGap)
   box-shadow: var(--shadowThin)
 
 .fade-enter-from,

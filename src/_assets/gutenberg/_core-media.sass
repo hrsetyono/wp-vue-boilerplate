@@ -1,0 +1,465 @@
+///// IMAGE
+
+.wp-block-image
+  text-align: center
+
+  &.is-style-rounded img
+    border-radius: 9999px
+
+  &.alignleft img,
+  &.alignright img
+    max-width: 50%
+    margin-bottom: 1.5rem
+
+  &.alignleft img
+    float: left
+    margin-right: 1.5rem
+    text-align: left
+
+  &.alignright img
+    float: right
+    margin-left: 1.5rem
+    text-align: right
+
+  &.alignfull
+    img
+      width: 100%
+      border-radius: 0
+    
+  &.alignwide
+    img
+      width: 100%
+
+// hover effect
+.wp-block-image > a,
+.wp-block-gallery figure > a
+  display: block
+  overflow: hidden
+  border-radius: var(--gRadius)
+
+  img
+    transition: var(--gTransition)
+
+  &:hover img
+    opacity: .75
+    backface-visibility: hidden
+    transform: translateY(-2px)
+    box-shadow: var(--shadow1)
+
+  &:active img
+    transform: none
+    transition: none
+
+///// GALLERY
+
+.wp-block-gallery
+  --columns: 3
+  --gap: 1rem
+
+  display: flex
+  flex-wrap: wrap
+  row-gap: var(--gap)
+  column-gap: var(--gap)
+  padding-left: 0
+  width: 100%
+
+  &:not(.is-cropped)
+    align-items: flex-start
+
+  @media ($above-s)
+    &.columns-1
+      --columns: 1
+    &.columns-2
+      --columns: 2
+    &.columns-3
+      --columns: 3
+    &.columns-4
+      --columns: 4
+    &.columns-5
+      --columns: 5
+    &.columns-6
+      --columns: 6
+    &.columns-7
+      --columns: 7
+    &.columns-8
+      --columns: 8
+
+  @media ($below-s)
+    --columns: 3
+
+    &.columns-2
+      --columns: 2
+  
+  @media ($below-xs)
+    --columns: 2
+
+.blocks-gallery-caption
+  order: 3
+
+// gallery item
+.wp-block-image
+  .wp-block-gallery &
+    flex-grow: 1
+    position: relative
+    width: calc(100% / var(--columns) - var(--gap))
+
+  .wp-block-gallery.is-cropped &
+    a
+      height: 100%
+    img
+      flex: 1
+      height: 100%
+      width: 100%
+      object-fit: cover
+      object-position: center center
+
+// Caption
+.wp-block-gallery figure
+  figcaption
+    overflow-y: hidden
+    background-image: linear-gradient( 0deg, rgba(black,.7), rgba(black,.5) 50%,transparent)
+    
+    position: absolute
+    z-index: 2
+    left: 0
+    bottom: 0
+    
+    width: 100%
+    max-height: 75%
+    padding: var(--space-2)
+    border: none
+    color: white
+
+  figcaption a:hover
+    opacity: .6
+    color: inherit
+
+// GALLERY Slider
+.wp-block-gallery.is-style-px-slider
+  row-gap: 0.5rem
+
+  // Initially hide the second slide before loading
+  &.columns-default,
+  &.columns-3
+    > .wp-block-image:nth-child(n+4)
+      display: none
+  &.columns-2
+    > .wp-block-image:nth-child(n+3)
+      display: none
+  &.columns-4
+    > .wp-block-image:nth-child(n+5)
+      display: none
+  &.columns-5
+    > .wp-block-image:nth-child(n+6)
+      display: none
+  &.columns-6
+    > .wp-block-image:nth-child(n+7)
+      display: none
+
+// GALLERY Thumbnails
+
+.wp-block-gallery.is-style-px-thumbnails
+  display: grid
+  grid-template-columns: repeat(var(--columns, 3), 1fr)
+
+  @media ($below-s)
+    --columns: 2
+
+  figure
+    max-width: none
+    width: 100%
+    height: 100%
+    padding-bottom: 75%
+
+  .alignwide
+    grid-column: span 2
+    padding-bottom: calc(37.5% - var(--gap) / 2)
+
+  .alignfull
+    grid-row: span 2
+
+  .blocks-gallery-caption
+    grid-column: span var(--columns, 3)
+
+.wp-block-gallery.is-style-px-thumbnails figure
+  position: relative
+  height: 100%
+  margin: 0
+
+  > a,
+  > img
+    +absolute-fill
+    width: 100%
+    height: 100%
+
+  > img,
+  > a img
+    width: 100%
+    object-fit: cover
+    object-position: center center
+
+  img
+    border-radius: var(--gRadius)
+
+  figcaption
+    border-radius: var(--gRadius)
+
+  strong
+    display: block
+    font-size: var(--mFontSize)
+    font-family: var(--hFontFamily)
+
+///// COVER
+
+.wp-block-cover
+  position: relative
+  display: flex
+  align-items: stretch
+  justify-content: center
+
+  min-height: 400px
+  padding-top: var(--blockGap)
+  padding-bottom: var(--blockGap)
+
+  &:not(.alignfull)
+    border-radius: var(--gRadius)
+    padding: var(--blockGap)
+    overflow: hidden
+
+
+.has-custom-content-position
+  --alignX: center
+  --alignY: center
+
+  &[class*="is-position-top-"]
+    --alignY: flex-start
+
+  &[class*="is-position-bottom-"]
+    --alignY: flex-end
+
+  &[class*="-right"]
+    --alignX: flex-end
+
+  &[class*="-left"]
+    --alignX: flex-start
+
+// Overlay
+.wp-block-cover__background
+  +absolute-fill
+  z-index: 2
+  width: 100%
+  height: 100%
+  background-color: var(--bgColor, black)
+
+  &.has-background-gradient
+    background-color: transparent
+
+  &.has-background-dim
+    opacity: .5
+  &.has-background-dim-0
+    opacity: 0
+  &.has-background-dim-10
+    opacity: .1
+  &.has-background-dim-20
+    opacity: .2
+  &.has-background-dim-30
+    opacity: .3
+  &.has-background-dim-40
+    opacity: .4
+  &.has-background-dim-60
+    opacity: .6
+  &.has-background-dim-70
+    opacity: .7
+  &.has-background-dim-80
+    opacity: .8
+  &.has-background-dim-90
+    opacity: .9
+  &.has-background-dim-100
+    opacity: 1
+
+.wp-block-cover__image-background
+  +absolute-fill
+  
+  border: none
+  border-radius: 0
+  padding: 0
+  margin: 0
+  width: 100%
+  height: 100%
+  max-width: none
+  max-height: none
+  
+  background-repeat: no-repeat
+  background-size: cover
+  object-fit: cover
+  object-position: center center
+  box-shadow: none
+
+  &.is-repeated
+    background-repeat: repeat
+    background-size: auto
+
+
+.wp-block-cover__inner-container
+  display: flex
+  flex-direction: column
+  align-items: var(--alignX, center)
+  justify-content: var(--alignY, center)
+
+  position: relative
+  z-index: 2
+  width: var(--wideSize)
+  color: var(--textColor)
+
+  .wp-block-cover:not(.alignfull) &
+    padding-right: var(--gridRim)
+    padding-left: var(--gridRim)
+
+  > *
+    width: 100%
+    max-width: var(--contentSize)
+  .alignwide
+    max-width: var(--wideSize)
+
+
+.has-parallax
+  // only on desktop because mobile height is keep changing due to browser header reappearing
+  @media ($above-s)
+    background-attachment: fixed
+
+// Cover Below Header
+.wp-block-cover.is-style-px-below-header
+  margin-top: calc(var(--headerHeight) * -1) !important
+
+body.px-has-transparent-header
+  .header:not(.is-stuck),
+  .header-mobile:not(.is-stuck)
+    background-color: transparent
+
+    .menu-item > a
+      color: var(--textInvert)
+    .menu-item.menu-item-has-children > a::after
+      filter: var(--textInvertMask)
+
+// Cover Mobile
+.wp-block-cover__image-background[style*="--pxMobileMediaURL"]
+  @media ($below-s)
+    background-image: var(--pxMobileMediaURL) !important
+
+.wp-block-cover[style*="pxMobileHeight"]
+  @media ($below-s)
+    min-height: var(--pxMobileHeight) !important
+
+///// MEDIA TEXT
+
+.wp-block-media-text
+  --_gap: var(--blockGap)
+  display: grid
+  row-gap: var(--_gap)
+  column-gap: var(--_gap)
+  grid-template-columns: 50% auto
+
+  &.alignwide,
+  &.alignfull
+    --_gap: var(--blockWideGap)
+    margin-top: var(--blockWideGap)
+
+    &:first-child
+      margin-top: 0
+
+  &:not([class*="is-vertically-aligned-"])
+    align-items: center
+
+  &.has-background
+    border-radius: var(--gRadius)
+
+  @media ($below-s)
+    --columnGap: 1rem
+
+  @media ($below-xs)
+    &.is-stacked-on-mobile
+      --columnsMedia: 1fr
+      --columnsContent: 1fr
+
+      grid-template-columns: minmax(0, 1fr)
+
+
+.wp-block-media-text__media
+  margin-bottom: 0
+
+  img
+    width: 100%
+
+  .is-image-fill &
+    align-self: stretch
+    background-repeat: no-repeat
+    background-size: cover
+    border-radius: var(--gRadius)
+    min-height: 150px
+    height: 100%
+
+    img
+      display: none 
+
+  @media ($above-xs)
+    .has-media-on-the-right &
+      order: 1
+
+
+.wp-block-media-text__content
+  padding: var(--contentPadding, 0)
+
+  .wp-block-media-text.has-background &
+    --contentPadding: 3rem
+
+    @media ($below-m)
+      --contentPadding: 1.5rem
+
+    @media ($below-s)
+      --contentPadding: 1rem
+
+    @media ($below-xs)
+      --contentPadding: 0 1rem 1rem 1rem
+    
+
+///// AUDIO
+
+.wp-block-audio
+  text-align: center
+
+  audio
+    width: 100%
+
+
+///// FILE
+
+.wp-block-file
+  --bgColor: var(--color1)
+  
+  display: flex
+  align-items: center
+  justify-content: center
+  padding: 1.25rem
+  background-color: rgba(black, .05)
+  border: 1px solid rgba(black, .2)
+  border-radius: var(--gRadius)
+
+  &.alignleft
+    justify-content: flex-start
+    float: left
+
+  &.alignright
+    justify-content: flex-end
+
+.wp-block-file__button
+  margin-left: 1rem
+
+
+///// VIDEO
+
+.wp-block-video
+  width: 100%
+  text-align: center
+
+  video
+    width: 100%

@@ -1,0 +1,156 @@
+@import "../helpers"
+
+///// GENERAL
+
+main
+  letter-spacing: calc(0.01 * var(--fontSize))
+  overflow-wrap: break-word
+
+  // @todo: problematic on some pages
+  > *:first-child:not(.alignfull)
+    margin-top: var(--blockGap)
+
+    body.single-post &
+      padding-top: 0
+  
+  > *:last-child:not(.alignfull)
+    margin-bottom: var(--blockWideGap)
+
+  ul, ol
+    padding-left: 1.25rem
+  
+  a
+    text-decoration: underline
+  a:hover
+    color: var(--linkColorHover, var(--color1))
+
+.has-color-1-background-color
+  + .wp-block-cover__inner-container,
+  .wp-block-column:not(.has-background-color),
+  .has-media-text__content
+    > a:hover
+      color: var(--color2)
+
+main,
+.wp-block-group
+  > *
+    margin: 0 auto
+    max-width: var(--contentSize)
+
+// Add rim to the side
+main,
+.wp-block-group.alignfull,
+.wp-block-cover__inner-container
+  @media ($below-l)
+    padding-right: var(--gridRim)
+    padding-left: var(--gridRim)
+
+  
+main,
+.wp-block-group,
+.wp-block-cover__inner-container,
+.wp-block-media-text__content,
+.wp-block-column
+  > * + *
+    margin-top: var(--blockGap)
+
+
+///// ALIGNMENT
+
+.alignleft,
+.has-text-align-left
+  text-align: left
+.alignright,
+.has-text-align-right
+  text-align: right
+.aligncenter,
+.has-text-align-center
+  text-align: center
+
+.alignwide
+  max-width: var(--wideSize)
+  width: 100%
+  
+  @media ($below-l)
+    max-width: 100%
+
+
+.alignfull
+  max-width: none
+  margin-top: var(--blockWideGap)
+
+  @media ($below-l)
+    margin-right: calc(-1 * var(--gridRim))
+    margin-left: calc(-1 * var(--gridRim))
+
+  &:first-child
+    margin-top: 0
+
+  + *
+    margin-top: var(--blockWideGap)
+
+  + .alignfull
+    margin-top: 0
+
+  &:last-child
+    margin-bottom: 0
+
+
+.is-vertically-aligned-top,
+.are-vertically-aligned-top
+  align-items: flex-start
+  align-self: flex-start
+
+.is-vertically-aligned-center,
+.are-vertically-aligned-center
+  align-items: center
+  align-self: center
+
+.is-vertically-aligned-bottom,
+.are-vertically-aligned-bottom
+  align-items: flex-end
+  align-self: flex-end
+
+// @since WP 5.7.0
+.is-content-justification-left
+  --flexAlign: flex-start
+.is-content-justification-center
+  --flexAlign: center
+.is-content-justification-right
+  --flexAlign: flex-end
+.is-content-justification-space-between
+  --flexAlign: space-between
+
+[class*="is-content-justification-"]
+  justify-content: var(--flexAlign)
+
+  &.is-vertical
+    justify-content: normal
+    align-items: var(--flexAlign)
+
+.screen-reader-text
+  border: 0
+  clip: rect(1px, 1px, 1px, 1px)
+  clip-path: inset(50%)
+  height: 1px
+  margin: -1px
+  overflow: hidden
+  padding: 0
+  position: absolute !important
+  width: 1px
+  word-wrap: normal !important
+
+.wp-element-caption
+  display: inline-block
+  width: 100%
+  padding: 0 var(--space-2)
+  margin-right: auto
+  margin-left: auto
+  font-size: var(--sFontSize)
+  text-align: center
+
+@import "core-text"
+@import "core-media"
+@import "core-design"
+@import "core-widget"
+@import "custom"

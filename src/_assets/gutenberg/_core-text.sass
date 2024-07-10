@@ -1,0 +1,392 @@
+///// PARAGRAPH
+
+p.has-background
+  padding: var(--space0)
+  border-radius: var(--gRadius)
+
+.has-drop-cap:first-letter
+  float: left
+  margin-right: 0.25rem
+  font-family: var(--hFontFamily)
+  font-weight: 700
+  font-size: 3.25rem
+  line-height: 3.25rem
+
+.has-small-font-size
+  font-size: var(--sFontSize)
+
+.has-regular-font-size
+  font-size: var(--fontSize)
+
+.has-medium-font-size
+  font-size: var(--mFontSize)
+
+.has-large-font-size
+  font-size: var(--lFontSize)
+  line-height: var(--hLineHeight)
+
+.has-huge-font-size
+  font-size: var(--xlFontSize)
+  line-height: var(--hLineHeight)
+
+p.is-style-h-no-spacing
+  margin-bottom: calc(var(--blockGap) * -1)
+
+///// HEADING
+
+h1, h2, h3, h4, h5, h6
+  &.has-background
+    padding: 1rem 2rem
+
+    @media ($below-s)
+      padding: 0.5rem 1rem
+
+  sub,
+  sup
+    text-transform: uppercase
+    line-height: 1.75
+    letter-spacing: 0.05em
+    font-size: 50%
+    font-weight: var(--fontWeight)
+
+  strong
+    font-weight: var(--fontWeight)
+
+  &.is-style-h-no-spacing
+    line-height: var(--lineHeight) // make line height larger
+    margin-bottom: calc(var(--blockGap) * -1)
+
+///// LIST
+
+ul.has-background,
+ol.has-background
+  padding: 1rem 1.5rem
+  padding-left: 2.5rem
+
+.is-style-px-inline,
+.is-style-px-inline
+  display: flex
+  flex-wrap: wrap
+  column-gap: var(--space1)
+  row-gap: var(--space1)
+  list-style-type: none
+  padding: 0
+  
+///// QUOTE
+
+.wp-block-quote
+  position: relative
+  padding: 0.5rem 2rem
+  border-left: 3px solid
+
+  > * + *
+    margin-top: 1rem
+
+  cite
+    display: block
+    font-size: var(--sFontSize)
+    opacity: .5
+
+  &.has-text-align-right
+    border-left: none
+    border-right: 3px solid
+
+  &.has-text-align-center
+    padding-top: 1.5rem
+    padding-bottom: 0
+    border-left: none
+
+    &::before
+      content: ""
+      position: absolute
+      top: 0
+      width: 100px
+      height: 3px
+      background-color: var(--text)
+      transform: translateX(-50%)
+
+// QUOTE Testimony
+.wp-block-quote.is-style-px-testimony
+  position: relative
+  border: none
+  padding: var(--blockGap)
+  padding-right: var(--blockWideGap)
+  box-shadow: var(--shadowThin)
+
+  &::before
+    content: ""
+    display: inline-block
+    background: url('./svg/quote-right.svg') no-repeat center center
+    background-size: contain
+    opacity: .1
+
+    position: absolute
+    top: var(--blockGap)
+    right: var(--blockGap)
+    width: 2rem
+    height: 2rem
+
+
+  cite
+    font-style: normal
+    color: var(--text)
+    opacity: 1
+    line-height: 1.5
+
+    strong
+      display: block
+
+    img
+      float: left
+      object-fit: cover
+      object-position: center center
+      max-width: 2.5rem
+      max-height: 2.5rem
+      margin-right: var(--space-2)
+      border-radius: 50%
+
+  &.has-text-align-right
+    padding: var(--blockGap)
+    padding-left: var(--blockWideGap)
+
+    &::before
+      right: auto
+      left: var(--blockGap)
+
+    cite img
+      float: right
+      margin-right: 0
+      margin-left: var(--space-2)
+  
+  &.has-text-align-center
+    cite img
+      float: none
+      margin: 0
+      margin-bottom: var(--space-2)
+
+// QUOTE Timeline
+.wp-block-quote.is-style-px-timeline
+  --gap: 2rem
+  --x: 50%
+  --x2: 100%
+
+  position: relative
+  max-width: calc(var(--wideSize) / 2 - var(--gap))
+  transform: translateX(calc(-50% - var(--gap)))
+  
+  border: none
+  padding: var(--blockGap)
+  box-shadow: var(--shadowThin)
+
+  @media ($below-l)
+    max-width: calc(100% / 2 - var(--gap))
+
+  @media ($below-s)
+    max-width: calc(100% - var(--gap) - 0.5rem)
+    margin-left: 0
+    margin-right: auto
+    transform: none
+
+    text-align: left
+
+  cite
+    position: absolute
+    top: 50%
+    right: calc(-1 * (var(--gap) + 1rem))
+    transform: translateY(-50%) translateX(var(--x2))
+    
+    margin-top: 0
+    padding: 0 0.5rem
+    background-color: var(--grayLight)
+    border-radius: var(--gRadius)
+
+    font-size: var(--fontSize)
+    font-weight: 700
+    font-style: normal
+    color: var(--text)
+
+    @media ($below-s)
+      position: static
+      display: inline-block
+      width: auto
+      right: 0
+      transform: none
+      margin-top: 1rem
+      font-size: var(--sFontSize)
+
+  &::before
+    content: ""
+    display: inline-block
+    background-color: var(--textInvert)
+
+    position: absolute
+    z-index: 2
+    top: 50%
+    right: calc(-1 * var(--gap))
+    transform: translateY(-50%) translateX(var(--x))
+    
+    width: 1rem
+    height: 1rem
+    border: 2px solid
+    border-radius: 50%
+
+  &::after
+    content: ""
+    display: block
+    position: absolute
+    top: 0
+    right: calc(-1 * var(--gap))
+    width: 2px
+    height: 100%
+    background-color: var(--text)
+    transform: translateX(var(--x))
+
+    @media ($below-s)
+      top: -1rem
+      bottom: -1rem
+      height: auto
+
+  @media ($below-s)
+    &:first-of-type::after
+      top: 0
+    &:last-of-type::after
+      bottom: 0
+
+  @media ($above-s)
+    + .is-style-px-timeline
+      margin-top: 0
+
+    &.has-text-align-right
+      --x: -50%
+      --x2: -100%
+
+      text-align: left
+      transform: translateX(calc(50% + var(--gap)))
+
+      cite
+        left: calc(-1 * (var(--gap) + 1rem))
+        right: auto
+      &::before,
+      &::after
+        left: calc(-1 * var(--gap))
+        right: auto
+      &::after
+        width: 2.5px // looks thinner if only 2px?
+
+    &.has-text-align-center
+      transform: none
+      margin-top: 5rem
+      max-width: var(--contentSize)
+
+      cite
+        top: 0
+        left: 50%
+        right: auto
+        transform: translateX(-50%) translateY(-50%)
+
+      &::before
+        top: -3rem
+        left: auto
+        right: auto
+        transform: translateX(-50%)
+      
+      &::after
+        top: -5rem
+        left: 50%
+        width: 2.5px
+        height: 3rem
+        transform: translateX(-50%)
+
+///// TABLE
+
+.wp-block-table
+  --tableStripe: #eef2f7
+
+  display: flex
+  flex-direction: column
+  overflow-x: auto
+  margin-top: var(--blockGap)
+  margin-bottom: var(--blockGap)
+
+  @media ($below-s)
+    font-size: var(--sFontSize)
+
+  table
+    border-collapse: collapse
+    border-spacing: 0
+    color: var(--text)
+  &.has-fixed-layout table
+    table-layout: fixed
+
+  thead,
+  tfoot
+    background-color: var(--bgColor, #eef2f7)
+    color: var(--textColor, var(--text))
+    font-weight: 700
+    text-align: left
+
+  thead
+    border-bottom: 2px solid var(--text)
+  tfoot
+    border-top: 2px solid var(--text)
+  tbody
+    background-color: var(--textInvert)
+    color: var(--text)
+
+  th, td
+    padding: 0.5rem 1rem
+    border: 1px solid rgba(black, .5)
+
+    @media ($below-s)
+      padding: 0.25rem 0.5rem
+
+  &.is-style-px-full-color
+    tbody
+      background-color: var(--bgColor)
+      color: var(--textColor)
+
+  &.is-style-stripes
+    table
+      --tableStripe: rgba(var(--bgColorRGB), .1)
+
+    tbody tr:nth-child(odd)
+      background: var(--textInvert)
+    tbody tr:nth-child(even)
+      background-color: var(--tableStripe)
+
+
+.wp-block-table
+  &.is-style-main,
+  &.is-style-main-stripes
+    --tableStripe: #{rgba(--main, .1)}
+    --bgColor: var(--main)
+    --textColor: var(--textInvert)
+
+  &.is-style-sub,
+  &.is-style-sub-stripes
+    --tableStripe: #{rgba(--sub, .2)}
+    --bgColor: var(--sub)
+    --textColor: var(--text)
+
+
+///// VERSE
+  
+.wp-block-verse
+  white-space: pre-wrap
+  font-family: var(--fontFamily)
+  font-size: var(--fontSize)
+
+///// CODE & PREFORMATTED
+
+.wp-block-code,
+.wp-block-preformatted
+  white-space: normal
+
+.wp-block-code
+  background-color: rgba(black, .05)
+  padding: 1rem
+  border: 1px solid rgba(black, .1)
+  border-radius: var(--gRadius)
+
+  code
+    padding: 0 0.5rem

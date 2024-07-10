@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
-
 import { userRoutes, checkUserAuth } from '@/user/router-user';
 
-import ViewHome from '@/views/ViewHome.vue';
-import ViewPage from '@/views/ViewPage.vue';
-import ViewPost from '@/views/ViewPost.vue';
-import View404 from '@/views/View404.vue';
+import ViewHome from '@/main/ViewHome.vue';
+import View404 from '@/main/View404.vue';
+
+import ViewPosts from '@/wp/ViewPosts.vue';
+import ViewPost from '@/wp/ViewPost.vue';
+import ViewPage from '@/wp/ViewPage.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -27,7 +28,15 @@ const router = createRouter({
       },
     },
     {
-      path: '/post/:slug',
+      path: '/posts',
+      name: 'posts',
+      component: ViewPosts,
+      meta: {
+        title: 'Blog Posts',
+      },
+    },
+    {
+      path: '/posts/:slug',
       name: 'post',
       component: ViewPost,
       meta: {

@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { useUserStore } from '@/user/stores-user';
+import { useUserStore } from './stores-user';
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -46,7 +46,7 @@ const register = async () => {
       router.push({
         name: 'login',
         query: {
-          message: 'You can now login with your new account',
+          message: 'registerSuccess',
           messageType: 'good',
         },
       });
@@ -172,7 +172,7 @@ onMounted(async () => {
 </template>
 
 <style lang="sass" scoped>
-@import "@/css/helpers"
+@import "@assets/helpers"
 @import "@/user/user"
 
 .user-form

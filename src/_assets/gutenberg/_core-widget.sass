@@ -1,0 +1,343 @@
+
+///// LATEST POST
+
+ul.wp-block-latest-posts
+  padding-left: 0
+
+.wp-block-latest-posts
+  display: grid
+  grid-template-columns: repeat(var(--postsColumns, 3), 1fr)
+  column-gap: var(--postsGap, 1.5rem)
+  row-gap: var(--postsGap, 1.5rem)
+
+  list-style-type: none
+  clear: both
+
+  @media ($below-m)
+    --postsGap: 1rem
+
+  // the top spacing should follow Group sizing
+  &.alignwide,
+  &.alignfull
+    --blockGap: var(--blockWideGap)
+
+  li
+    clear: both
+
+  a
+    display: block
+    text-decoration: none
+  a:hover
+    color: var(--linkColorHover)
+    text-decoration: underline
+
+  li > a
+    font-family: var(--hFontFamily)
+    font-size: var(--postsFontSize, var(--h5Size))
+
+  &.columns-1
+    --postsColumns: 1
+  &.columns-2
+    --postsColumns: 2
+  &.columns-3
+    --postsColumns: 3
+  &.columns-4
+    --postsColumns: 4
+  &.columns-5
+    --postsColumns: 5
+  &.columns-6
+    --postsColumns: 6
+
+  &.columns-2,
+  &.columns-3
+    @media ($below-s)
+      --postsGap: 1rem
+      --postsColumns: 2
+    @media ($below-xs)
+      --postsColumns: 1
+
+  &.columns-4,
+  &.columns-5,
+  &.columns-6
+    --postsGap: 1rem
+    --postsFontSize: var(--h6Size)
+
+    @media ($below-m)
+      --postsColumns: 3
+    @media ($below-s)
+      --postsColumns: 2
+
+
+
+.wp-block-latest-posts__post-author,
+.wp-block-latest-posts__post-date
+  display: inline-block
+  color: var(--textDim)
+  font-weight: 600
+  font-size: var(--xsFontSize)
+  opacity: .5
+  text-transform: uppercase
+
+.wp-block-latest-posts__post-author
+  margin-right: 0.5rem
+
+.wp-block-latest-posts__featured-image
+  margin-bottom: 0.5rem
+  max-width: var(--postsImageWidth, 100%)
+
+  img
+    box-shadow: var(--shadow0)
+    width: 100%
+    max-height: 150px
+    object-fit: cover
+
+  a:hover
+    opacity: .75
+
+  &.alignleft,
+  &.alignright
+    --postsImageWidth: 45%
+
+    .columns-4 &,
+    .columns-5 &,
+    .columns-6 &
+      --postsImageWidth: 35%
+
+  &.alignleft
+    float: left
+    margin-right: 1rem
+
+  &.alignright
+    float: right
+    margin-left: 1rem
+  
+  &.aligncenter,
+  .is-grid &
+    --postsMaxWidth: none
+
+  // underline the title when hovering the image
+  &:hover + a
+    text-decoration: underline
+
+  // underline the title when hovering the image
+  &:hover + a
+    text-decoration: underline
+
+.wp-block-latest-posts__post-excerpt
+  font-size: var(--sFontSize)
+
+///// EMBED
+
+.wp-block-embed
+  text-align: center
+
+  iframe
+    border-radius: var(--gRadius)
+
+.wp-block-embed__wrapper
+  display: flex
+  justify-content: center
+  position: relative
+
+  &::before
+    .wp-has-aspect-ratio &,
+    .wp-block-embed-wordpress &
+      content: ""
+      display: block
+      width: 100%
+
+    .wp-embed-aspect-21-9 &,
+    .wp-block-embed-wordpress &
+      padding-top: 42.85%
+    .wp-embed-aspect-18-9 &
+      padding-top: 50%
+    .wp-embed-aspect-16-9 &
+      padding-top: 56.25%
+    .wp-embed-aspect-4-3 &
+      padding-top: 75%
+    .wp-embed-aspect-1-1 &
+      padding-top: 100%
+    .wp-embed-aspect-9-6 &
+      padding-top: 66.667%
+    .wp-embed-aspect-1-2 &
+      padding-top: 200%
+    
+
+.wp-has-aspect-ratio,
+.wp-block-embed-wordpress
+  iframe
+    +absolute-fill
+    width: 100%
+    height: 100%
+
+
+.wp-block-embed-wordpress
+  blockquote
+    display: none
+  
+  iframe
+    clip: auto !important
+
+
+///// SEARCH
+
+.wp-block-search__label
+  margin-bottom: 0.25rem
+  font-weight: 700
+  font-size: var(--sFontSize)
+
+.wp-block-search__inside-wrapper 
+  display: flex
+  column-gap: var(--space-1)
+  max-width: var(--contentSize)
+  
+  input
+    flex: 1
+  button
+    background-color: var(--text)
+  
+.wp-block-search__button-inside
+  .wp-block-search__inside-wrapper
+    column-gap: 0
+    border: 1px solid
+    border-radius: var(--gRadius)
+    padding: var(--space-3)
+    background-color: var(--textInvert)
+
+    &:focus-within
+      outline: auto
+
+  input
+    border: none
+    background-color: transparent
+  input:focus
+    outline: none
+  button
+    padding: 0 var(--space-3)
+  svg
+    width: 1.75rem
+    height: 1.75rem
+
+
+///// SOCIAL LINKS
+
+// BRAND COLORS
+$social-colors: ( facebook: #1977f2, instagram: #f00075, linkedin: #0577b5, skype: #0478d7, telegram: #08c, tiktok: #000, twitter: #21a1f3, whatsapp: #25d366, youtube: #ff0100 )
+
+.wp-block-social-links
+  --iconSize: 1.75rem
+  --iconPadding: 0.5rem
+
+  display: flex
+  flex-wrap: wrap
+  flex-direction: row
+  justify-content: flex-start
+  row-gap: 1rem
+  column-gap: 1rem
+
+  padding-left: 0
+  list-style-type: none
+
+  &.items-justified-center
+    justify-content: center
+  &.items-justified-right
+    justify-content: flex-end
+  &.items-justified-space-between
+    justify-content: space-between
+
+  &.has-small-icon-size
+    --iconSize: 1.25rem
+    --iconPadding: 0.25rem
+  &.has-large-icon-size
+    --iconSize: 2.5rem
+  &.has-huge-icon-size
+    --iconSize: 3.25rem
+
+  &.has-monotone-color
+    --iconBg: var(--color1)
+    --iconColor: currentColor
+
+  &.is-style-default,
+  &.is-style-pill-shape
+    --iconColor: var(--textInvert)
+  
+  &.is-style-logos-only
+    --iconPadding: 0px
+
+  &.is-orientation-vertical
+    flex-direction: column
+    align-items: flex-start
+
+.wp-social-link
+  --brandColor: currentColor
+
+// $social-colors variable is in _vars.scss
+@each $name, $color in $social-colors
+  .wp-social-link-#{ $name }
+    --brandColor: #{ $color }
+
+// anchor tag
+.wp-block-social-link-anchor
+  display: flex
+  align-items: center
+  justify-content: center
+  
+  transition: var(--gTransition)
+  will-change: opacity, transform
+
+  border-radius: var(--gRadius)
+  line-height: 0
+
+  &:hover
+    opacity: .7
+    transform: translateY(-1px)
+
+    figure
+      box-shadow: var(--shadow1)
+  
+  &:active
+    transition: none
+    transform: none
+
+  p
+    display: inline-block
+    margin-left: 0.5rem
+    line-height: 1.25
+
+  strong
+    display: block
+
+.wp-block-social-link__icon
+  display: flex
+  align-items: center
+  justify-content: center
+  transition: var(--gTransition)
+
+  padding: var(--iconPadding, 0.25rem)
+  width: calc(var(--iconSize) + var(--iconPadding) * 2)
+  height: calc(var(--iconSize) + var(--iconPadding) * 2)
+  border-radius: var(--gRadius)
+
+  .is-style-default &,
+  .is-style-pill-shape &
+    background-color: var(--iconBg, var(--brandColor))
+
+  .is-style-pill-shape &
+    border-radius: 50%
+
+  .is-style-outline &
+    border: 1px solid var(--iconColor, var(--brandColor))
+    border-radius: 50%
+
+  svg
+    height: 100%
+
+    .has-large-icon-size &,
+    .has-huge-icon-size &
+      width: 100%
+
+    .wp-social-link-custom &
+      height: 85%
+
+  path
+    fill: var(--iconColor, var(--brandColor))

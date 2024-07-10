@@ -2,13 +2,13 @@
 import { useUIStore } from '@/stores-ui';
 import { useAuthStore } from '@/user/stores-auth';
 
-import HouseSVG from '@/svg/house.svg';
-import UserSVG from '@/svg/user.svg';
-import PhoneSVG from '@/svg/phone.svg';
-import PowerOffSVG from '@/svg/power-off.svg';
-import InstagramSVG from '@/svg/social-instagram.svg';
-import YoutubeSVG from '@/svg/social-youtube.svg';
-import TwitterSVG from '@/svg/social-twitter.svg';
+import HouseSVG from './svg/house.svg';
+import UserSVG from './svg/user.svg';
+import PhoneSVG from './svg/phone.svg';
+import PowerOffSVG from './svg/power-off.svg';
+import InstagramSVG from './svg/social-instagram.svg';
+import YoutubeSVG from './svg/social-youtube.svg';
+import TwitterSVG from './svg/social-twitter.svg';
 
 const uiStore = useUIStore();
 const authStore = useAuthStore();
@@ -29,19 +29,19 @@ const logout = () => {
       <div class="offcanvas__inner" @click.stop>
         <ul class="offcanvas__nav" @click="uiStore.closeOffcanvas()">
           <li>
-            <router-link to="/">
+            <router-link :to="{name: 'home'}">
               <HouseSVG />
               <span>Home</span>
             </router-link>
           </li>
           <li>
-            <router-link to="/page/about-us">
+            <router-link :to="{name: 'page', params: { slug: 'about-us' }}">
               <UserSVG />
               <span>About Us</span>
             </router-link>
           </li>
           <li>
-            <router-link to="/page/contact-us">
+            <router-link :to="{name: 'page', params: { slug: 'contact-us' }}">
               <PhoneSVG />
               <span>Contact Us</span>
             </router-link>

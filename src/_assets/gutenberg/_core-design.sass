@@ -1,0 +1,289 @@
+///// BUTTONS
+
+.wp-block-buttons
+  --_gap: 1rem
+  --bgColor: var(--color1)
+  --textColor: var(--textInvert)
+
+  display: flex
+  align-items: center
+  justify-content: var(--flexAlign, none)
+  flex-wrap: wrap
+  column-gap: var(--_gap)
+  row-gap: var(--_gap)
+
+  &.aligncenter
+    justify-content: center
+
+  &.alignright
+    justify-content: flex-end
+
+  &.alignleft
+    justify-content: flex-start
+
+  &.is-vertical
+    flex-direction: column
+
+// General Button
+.wp-block-button
+  &.is-style-outline,
+  &.is-style-px-transparent
+    --textColor: currentColor
+
+.button,
+[type="submit"],
+[type="reset"],
+.wp-block-file__button,
+.wp-block-button__link
+  display: inline-flex
+  align-items: center
+  cursor: pointer
+  overflow: hidden
+  
+  padding: 0.75em 1em
+  background-color: var(--bgColor, var(--color1))
+  border: 1px solid rgba(black, .2)
+  border-bottom-width: 2px
+  border-radius: var(--gRadius)
+
+  text-decoration: none
+  text-transform: uppercase
+  text-align: center
+  font-weight: 700
+  font-size: var(--sFontSize)
+  letter-spacing: 0.05em
+  color: var(--textColor, var(--textInvert))
+  vertical-align: top
+  line-height: 1
+  
+  transition: var(--gTransition)
+  will-change: transform, opacity
+
+  // Image or SVG inside a button
+  img,
+  svg
+    margin-right: 0.5em
+    height: 1.25em
+    width: 1.25em
+    
+  img:only-child,
+  svg:only-child
+    margin-left: 0
+    margin-right: 0
+
+  path,
+  circle,
+  rect
+    fill: currentColor
+
+  &:hover
+    opacity: .9
+    color: var(--textColor, var(--textInvert))
+    transform: translateY(-2px)
+    box-shadow: var(--shadow1)
+
+  &:active
+    transition: none
+    transform: none
+    box-shadow: var(--shadow0)
+
+  &[disabled],
+  &.disabled
+    cursor: not-allowed
+    opacity: .5
+    filter: grayscale(1)
+
+
+.wp-block-button__link
+  display: flex
+
+  .is-style-outline &
+    border: 1px solid
+    border-bottom-width: 2px
+    background-color: transparent
+    color: var(--textColor)
+
+.wp-block-button.is-style-px-transparent
+  --bgColor: rgba(0,0,0,.1)
+
+  a
+    border: none
+    text-transform: uppercase
+    font-weight: 700
+    color: var(--textColor)
+  a:not(:hover)
+    background-color: transparent
+
+// @since WP 5.9
+.wp-block-button.has-custom-width
+  a
+    justify-content: center
+
+.wp-block-button__width-25
+  width: calc(25% - var(--_gap) * 0.75)
+.wp-block-button__width-50
+  width: calc(50% - var(--_gap) * 0.5)
+.wp-block-button__width-75
+  width: calc(75% - var(--_gap) * 0.25)
+.wp-block-button__width-100
+  width: 100%
+
+///// COLUMNS
+
+.wp-block-columns
+  display: flex
+  row-gap: var(--blockGap)
+  column-gap: var(--blockGap)
+
+  &.has-background
+    padding: var(--blockGap)
+    background-color: var(--bgColor)
+    border-radius: var(--gRadius)
+
+  @media ($below-s)
+    flex-wrap: wrap
+
+.wp-block-column
+  flex-basis: 0
+  flex-grow: 1
+  min-width: 0
+
+  &[style*="flex-basis"]
+    flex-grow: 0
+
+  &.has-background
+    padding: var(--blockGap)
+    border-radius: var(--gRadius)
+
+  @media ($below-s)
+    .wp-block-columns:not(.is-not-stacked-on-mobile) &
+      flex-basis: 100% !important
+      width: 100%  
+
+.wp-block-columns.is-style-px-no-gap
+  column-gap: 0
+
+  .wp-block-column
+    border-radius: 0
+
+.wp-block-columns.is-style-px-wide-gap
+  column-gap: var(--blockWideGap)
+
+
+////// GROUP
+  
+.wp-block-group
+  &:not(.has-background)
+    margin-top: var(--space3)
+    margin-bottom: var(--space3)
+
+  &.has-background.alignfull
+    padding-top: var(--space3)
+    padding-bottom: var(--space3)
+    border-radius: 0
+
+  &.has-background:not(.alignfull)
+    padding: var(--space1)
+    border-radius: var(--gRadius)
+
+  &:first-child
+    margin-top: 0
+
+  &:last-child
+    margin-bottom: 0
+
+.wp-block-group.alignfull[style*="padding-left"]
+  padding-left: var(--gridRim) !important
+.wp-block-group.alignfull[style*="padding-right"]
+  padding-right: var(--gridRim) !important
+
+// Group Alignment
+.wp-block-group.is-layout-constrained
+  &[class*="is-content-justification-"]
+    display: flex
+    flex-direction: column
+    align-items: var(--flexAlign)
+    justify-content: initial
+    
+    > *
+      margin-right: 0
+      margin-left: 0
+
+// Row Group
+.wp-block-group.is-layout-flex
+  display: flex
+  flex-wrap: wrap
+  column-gap: var(--blockGap)
+  row-gap: calc(var(--blockGap) / 2)
+
+  &.is-nowrap
+    flex-wrap: nowrap
+
+  > *
+    width: auto
+    margin: 0
+
+  &[class*="px-has-columns-"]
+    display: grid
+    grid-template-columns: repeat(var(--columns, 2), 1fr)
+    row-gap: var(--blockGap)
+
+  &.px-has-columns-2
+    --columns: 2
+    @media ($below-s)
+      --columns: 1
+
+  &.px-has-columns-3
+    --columns: 3
+    @media ($below-s)
+      --columns: 1
+
+  &.px-has-columns-4
+    --columns: 4
+
+    @media ($below-s)
+      --columns: 2
+    @media ($below-xs)
+      --columns: 1
+
+///// SPACER
+
+.wp-block-spacer
+  margin-top: 0
+  margin-bottom: 0
+
+  + *
+    margin-top: 0
+
+.wp-block-cover + .wp-block-spacer.is-style-px-negative + *
+  position: relative
+  z-index: 2
+
+///// SEPARATOR
+
+.wp-block-separator
+  display: block
+  border-top: 2px solid var(--bgColor, var(--gray))
+  margin: var(--space4) auto
+  padding: 0
+  width: 120px
+  line-height: 1
+  clear: both
+
+  &.is-style-wide
+    width: clamp(120px, var(--wideSize), 100%)
+
+  &.is-style-dots
+    border: 0
+    height: auto
+    width: auto
+    background-color: transparent
+    text-align: center
+
+    &::before
+      content: "···"
+      padding-left: var(--space3)
+      font-family: var(--codeFontFamily)
+      font-size: var(--lFontSize)
+      letter-spacing: 1.5rem
+      color: var(--bgColor, var(--text))

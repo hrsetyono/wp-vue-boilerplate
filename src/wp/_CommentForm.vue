@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
-import LoadingSpinner from '@/components/LoadingSpinner.vue';
-import { useContentStore } from '@/stores-content';
+import LoadingSpinner from '@components/LoadingSpinner.vue';
+import { useWpStore } from './stores-wp';
 
 const emit = defineEmits(['submit']);
 const props = defineProps({
@@ -15,7 +15,7 @@ const props = defineProps({
   },
 });
 
-const contentStore = useContentStore();
+const wpStore = useWpStore();
 
 const formBody = ref();
 const formMessage = ref();
@@ -27,7 +27,7 @@ const submitComment = async () => {
   formMessage.value = '';
 
   if (formBody.value) {
-    const response = await contentStore.postComment({
+    const response = await wpStore.postComment({
       post: props.postId,
       content: formBody.value,
       parent: props.parentId,
@@ -42,7 +42,6 @@ const submitComment = async () => {
       default:
         formMessage.value = 'Comment posted successfully';
         formMessageType.value = 'success';
-
         emit('submit', response.data);
     }
 
@@ -60,7 +59,7 @@ const submitComment = async () => {
   <form class="comment-form" @submit.prevent="submitComment">
     <textarea
       v-model="formBody"
-      rows="8"
+      rows="6"
       :placeholder="parentId ? 'Write your reply here' : 'Write your comment here'"
     />
     <p class="comment-form__submit">
