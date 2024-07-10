@@ -33,8 +33,9 @@ class MyFetch {
       }
 
       return response.json();
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error);
+      return error;
     }
   }
 
@@ -86,8 +87,9 @@ class MyFetch {
       }
 
       return response.json();
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error);
+      return error;
     }
   }
 
@@ -97,9 +99,10 @@ class MyFetch {
         method: 'DELETE',
       });
 
-      return await response;
-    } catch (err) {
-      console.log(err);
+      return response;
+    } catch (error) {
+      console.log(error);
+      return error;
     }
   }
 }
