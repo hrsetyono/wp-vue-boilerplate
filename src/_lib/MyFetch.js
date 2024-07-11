@@ -35,7 +35,7 @@ class MyFetch {
       return response.json();
     } catch (error) {
       console.log(error);
-      return error;
+      return Promise.reject(error);
     }
   }
 
@@ -89,7 +89,7 @@ class MyFetch {
       return response.json();
     } catch (error) {
       console.log(error);
-      return error;
+      return Promise.reject(error);
     }
   }
 
@@ -102,7 +102,7 @@ class MyFetch {
       return response;
     } catch (error) {
       console.log(error);
-      return error;
+      return Promise.reject(error);
     }
   }
 }

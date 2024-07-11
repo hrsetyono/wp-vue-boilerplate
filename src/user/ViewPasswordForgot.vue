@@ -1,8 +1,10 @@
 <script setup>
 import { ref } from 'vue';
+import { useUIStore } from '@/stores-ui';
 import { useUserStore } from './stores-user';
 
-const emit = defineEmits(['message', 'loading']);
+const emit = defineEmits(['message']);
+const uiStore = useUIStore();
 const userStore = useUserStore();
 
 const email = ref('');
@@ -11,23 +13,17 @@ const email = ref('');
  * Submit reset password request
  */
 const forgotPassword = async () => {
-  emit('loading', true);
-  const response = await userStore.forgotPassword(email.value);
-  emit('loading', false);
+  uiStore.isLoading = true;
 
-  switch (response.status) {
-    // if working
-    case 200:
-      emit('message', response.message, 'good');
-      email.value = '';
-      break;
-
-    // if error
-    case 403:
-    case 500:
-    default:
-      emit('message', response.message);
+  try {
+    const response = await userStore.forgotPassword(email.value);
+    emit('message', response.message, 'good');
+    email.value = '';
+  } catch (error) {
+    emit('message', error.message);
   }
+
+  uiStore.isLoading = false;
 };
 </script>
 

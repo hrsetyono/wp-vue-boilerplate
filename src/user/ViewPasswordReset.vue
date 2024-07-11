@@ -1,11 +1,13 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import { useUIStore } from '@/stores-ui';
 import { useUserStore } from './stores-user';
 
-const emit = defineEmits(['message', 'loading']);
+const emit = defineEmits(['message']);
 const router = useRouter();
 const route = useRoute();
+const uiStore = useUIStore();
 const userStore = useUserStore();
 
 const newPassword = ref('');
@@ -17,34 +19,28 @@ const isValidURL = computed(() => route.query.username && route.query.key);
  * Submit reset password request
  */
 const resetPassword = async () => {
-  emit('loading', true);
-  const response = await userStore.resetPassword(
-    newPassword.value,
-    newPasswordConfirm.value,
-  );
-  emit('loading', false);
+  uiStore.isLoading = true;
 
-  switch (response.status) {
-    // if working
-    case 200:
-      newPassword.value = '';
-      newPasswordConfirm.value = '';
+  try {
+    const response = await userStore.resetPassword(
+      newPassword.value,
+      newPasswordConfirm.value,
+    );
+    newPassword.value = '';
+    newPasswordConfirm.value = '';
 
-      router.push({
-        name: 'login',
-        query: {
-          message: response.message,
-          messageType: 'good',
-        },
-      });
-      break;
-
-    // if error
-    case 403:
-    case 500:
-    default:
-      emit('message', response.message);
+    router.push({
+      name: 'login',
+      query: {
+        message: 'passwordResetSuccess',
+        messageType: 'good',
+      },
+    });
+  } catch (error) {
+    emit('message', error.message);
   }
+
+  uiStore.isLoading = false;
 };
 </script>
 

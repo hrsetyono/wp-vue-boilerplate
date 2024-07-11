@@ -1,7 +1,6 @@
 <script setup>
 import { ref, watch, computed } from 'vue';
 import { useRoute } from 'vue-router';
-
 import LoadingSpinner from '@components/LoadingSpinner.vue';
 
 const _route = useRoute();
@@ -53,6 +52,15 @@ function _parseRouteMessage(code) {
     case 'passwordEmpty':
       return 'Password must be filled';
 
+    case 'invalidUsername':
+      return 'Username does not exist';
+
+    case 'incorrectPassword':
+      return 'Password is incorrect';
+
+    case 'passwordResetSuccess':
+      return 'Success! You can now login with the new password';
+
     default:
       return code || '';
   }
@@ -79,7 +87,6 @@ function _parseRouteMessage(code) {
     <router-view
       v-slot="{ Component, route }"
       @message="updateToast"
-      @loading="updateLoading"
     >
       <Transition
         name="fade"
@@ -90,7 +97,7 @@ function _parseRouteMessage(code) {
       </Transition>
     </router-view>
 
-    <LoadingSpinner v-if="isLoading" />
+    <LoadingSpinner />
   </div>
 </template>
 

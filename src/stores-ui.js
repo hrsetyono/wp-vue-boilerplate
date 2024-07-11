@@ -2,6 +2,7 @@ import { ref } from 'vue';
 import { defineStore } from 'pinia';
 
 export const useUIStore = defineStore('ui', () => {
+  const isLoading = ref(false);
   const isOffcanvasOpen = ref(false);
 
   /**
@@ -18,6 +19,7 @@ export const useUIStore = defineStore('ui', () => {
   }
 
   return {
+    isLoading,
     isOffcanvasOpen,
     toggleOffcanvas,
     closeOffcanvas,

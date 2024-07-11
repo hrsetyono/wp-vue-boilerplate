@@ -11,21 +11,11 @@ export const useUserStore = defineStore('user', () => {
    */
   async function register(fields) {
     try {
-      const response = await myFetch.post('/register', fields);
-
-      return {
-        status: response.status,
-      };
+      const userId = await myFetch.post('/register', fields);
+      return userId;
     } catch (error) {
-      return {
-        status: error.response.status,
-        code: error.response.data
-          ? error.response.data.code
-          : '',
-        message: error.response.data
-          ? error.response.data.message
-          : 'connectionError',
-      };
+      error.message = error.message || 'connectionError';
+      return Promise.reject(error);
     }
   }
 
@@ -34,7 +24,7 @@ export const useUserStore = defineStore('user', () => {
    */
   async function getRegisterNonce() {
     const response = await myFetch.get('/register/nonce');
-    return response.data;
+    return response;
   }
 
   /**
@@ -47,17 +37,10 @@ export const useUserStore = defineStore('user', () => {
         reset_url: window.location.origin + router.resolve({ name: 'passwordReset' }).fullPath,
       });
 
-      return {
-        status: response.status,
-        message: response.data.message,
-      };
+      return response;
     } catch (error) {
-      return {
-        status: error.response.status,
-        message: error.response.data
-          ? error.response.data.message
-          : 'connectionError',
-      };
+      error.message = error.message || 'connectionError';
+      return Promise.reject(error);
     }
   }
 
@@ -73,17 +56,10 @@ export const useUserStore = defineStore('user', () => {
         username: route.query.username,
       });
 
-      return {
-        status: response.status,
-        message: response.data.message,
-      };
+      return response;
     } catch (error) {
-      return {
-        status: error.response.status,
-        message: error.response.data
-          ? error.response.data.message
-          : 'connectionError',
-      };
+      error.message = error.message || 'connectionError';
+      return Promise.reject(error);
     }
   }
 

@@ -1,11 +1,13 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useUIStore } from '@/stores-ui';
 import { useUserStore } from './stores-user';
 
 const router = useRouter();
 const userStore = useUserStore();
-const emit = defineEmits(['message', 'loading']);
+const uiStore = useUIStore();
+const emit = defineEmits(['message']);
 
 const fields = ref({
   first_name: '',
@@ -24,7 +26,7 @@ const timestamp = ref('');
  * Do register and handle error / success
  */
 const register = async () => {
-  emit('loading', true);
+  uiStore.isLoading = true;
 
   // clear all red border on error fields
   const $errorFields = document.querySelectorAll('.user-form__field.has-error');
@@ -32,39 +34,30 @@ const register = async () => {
     $f.classList.remove('has-error');
   });
 
-  const response = await userStore.register({
-    ...fields.value,
-    _wpnonce: nonce.value,
-    timestamp: timestamp.value,
-  });
-  emit('loading', false);
+  try {
+    const userId = await userStore.register({
+      ...fields.value,
+      _wpnonce: nonce.value,
+      timestamp: timestamp.value,
+    });
 
-  switch (response.status) {
-    // if working
-    case 200:
-      sessionStorage.removeItem('registerForm');
-      router.push({
-        name: 'login',
-        query: {
-          message: 'registerSuccess',
-          messageType: 'good',
-        },
-      });
-      break;
+    sessionStorage.removeItem('registerForm');
+    router.push({
+      name: 'login',
+      query: {
+        message: 'registerSuccess',
+        messageType: 'good',
+      },
+    });
+  } catch (error) {
+    emit('message', error.message);
 
-    // if error
-    case 403:
-    case 500:
-      emit('message', response.message);
-
-      // Add red border to error field
-      document.querySelector(`[name=${response.code}]`).closest('label').classList.add('has-error');
-      window.scrollTo(0, 0, { behavior: 'smooth' });
-      break;
-
-    default:
-      emit('message', response.message);
+    // Add red border to error field, the code is the same as field name
+    document.querySelector(`[name=${error.code}]`).closest('label').classList.add('has-error');
+    window.scrollTo(0, 0, { behavior: 'smooth' });
   }
+
+  uiStore.isLoading = false;
 };
 
 // Backup any filled data so it's not empty if you refresh the page

@@ -17,11 +17,11 @@ export const useAuthStore = defineStore('auth', () => {
    */
   async function login(username, password) {
     if (!username) {
-      return { message: 'usernameEmpty' };
+      return Promise.reject(new Error('usernameEmpty'));
     }
 
     if (!password) {
-      return { message: 'passwordEmpty' };
+      return Promise.reject(new Error('passwordEmpty'));
     }
 
     try {
@@ -40,15 +40,17 @@ export const useAuthStore = defineStore('auth', () => {
       localStorage.setItem('userEmail', response.user_email);
       localStorage.setItem('userDisplayName', response.user_display_name);
 
-      return {
-        status: 200,
-        message: 'loginSuccess',
-      };
+      return true;
     } catch (error) {
-      return {
-        status: error.status,
-        message: error.message || 'connectionError',
-      };
+      if (error.code.includes('incorrect_password')) {
+        error.message = 'incorrectPassword';
+      } else if (error.code.includes('invalid_username')) {
+        error.message = 'invalidUsername';
+      } else {
+        error.message = 'connectionError';
+      }
+
+      return Promise.reject(error);
     }
   }
 

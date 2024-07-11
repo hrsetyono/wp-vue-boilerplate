@@ -1,8 +1,11 @@
 <script setup>
+import { useUIStore } from '@/stores-ui';
+
+const uiStore = useUIStore();
 </script>
 
 <template>
-  <div class="loading">
+  <div v-if="uiStore.isLoading" class="loading">
     <span />
   </div>
 </template>
