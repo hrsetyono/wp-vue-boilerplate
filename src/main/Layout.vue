@@ -1,14 +1,6 @@
 <script setup>
-import { ref } from 'vue';
-
-import LoadingSpinner from '@components/LoadingSpinner.vue';
 import HeaderMain from './_HeaderMain.vue';
 import HeaderOffcanvas from './_HeaderOffcanvas.vue';
-
-const isLoading = ref(false);
-const updateLoading = (newState) => {
-  isLoading.value = newState;
-};
 </script>
 
 <template>
@@ -16,12 +8,7 @@ const updateLoading = (newState) => {
     <HeaderMain />
     <HeaderOffcanvas />
 
-    <LoadingSpinner v-if="isLoading" />
-
-    <router-view
-      v-slot="{ Component, route }"
-      @loading="updateLoading"
-    >
+    <router-view v-slot="{ Component, route }">
       <Transition
         name="fade"
         mode="out-in"

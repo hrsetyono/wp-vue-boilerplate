@@ -82,15 +82,9 @@ export const useWpStore = defineStore('wp', () => {
   async function postComment(args) {
     try {
       const response = await wpFetch.post('/comments', args);
-      return {
-        status: 200,
-        data: response,
-      };
+      return response;
     } catch (error) {
-      return {
-        status: error.status,
-        message: error.message,
-      };
+      return Promise.reject(error);
     }
   }
 

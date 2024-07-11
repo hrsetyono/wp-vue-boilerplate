@@ -13,7 +13,6 @@ const props = defineProps({
 const wpStore = useWpStore();
 const comments = ref();
 const replyingTo = ref();
-
 const isLoading = ref(true);
 
 /**
@@ -58,16 +57,16 @@ onMounted(async () => {
       @submit="addNewComment"
     />
 
-    <div v-if="isLoading" class="comment-loading">
-      <span />
-    </div>
+
     <Transition
-      v-else-if="comments"
       name="fade"
       mode="out-in"
       appear
     >
-      <ol class="comments">
+      <div v-if="isLoading" class="comment-loading">
+        <span />
+      </div>
+      <ol v-else-if="comments" class="comments">
         <li
           v-for="c in comments"
           :key="c.id"
@@ -192,9 +191,9 @@ a[href="#reply"]
     border-radius: 50%
     display: inline-block
     box-sizing: border-box
-    animation: commentLoadingSpinner 1s linear infinite
+    animation: commentSpinner 1s linear infinite
 
-@keyframes commentLoadingSpinner
+@keyframes commentSpinner
   0%
     transform: rotate(0deg)
   100%

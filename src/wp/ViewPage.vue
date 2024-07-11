@@ -1,24 +1,23 @@
 <script setup>
 import { useRoute } from 'vue-router';
 import { ref, watch, onBeforeMount } from 'vue';
-
+import { useUIStore } from '@/stores-ui';
 import { useWpStore } from './stores-wp';
-import LoadingSpinner from '@components/LoadingSpinner.vue';
 
 const route = useRoute();
+const uiStore = useUIStore();
 const wpStore = useWpStore();
 
 const page = ref();
-const isLoading = ref(true);
 
 const onReady = async () => {
-  isLoading.value = true;
+  uiStore.isLoading = true;
 
   // API call to get page content
   page.value = await wpStore.getPage(route.params.slug);
   document.title = document.title.replace(route.meta.title, page.value.title.rendered);
 
-  isLoading.value = false;
+  uiStore.isLoading = false;
 };
 
 // trigger onReady after route changed or before mounted
@@ -27,8 +26,7 @@ onBeforeMount(onReady);
 </script>
 
 <template>
-  <LoadingSpinner v-if="isLoading" />
-  <section v-else class="page">
+  <section v-if="page" class="page">
     <h1>{{ page.title }}</h1>
     <!-- eslint-disable-next-line vue/no-v-html -->
     <main v-html="page.content" />

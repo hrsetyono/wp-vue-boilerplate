@@ -1,16 +1,17 @@
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useUIStore } from '@/stores-ui';
 import PostList from './_PostList.vue';
 import { useWpStore } from './stores-wp';
 
-const emit = defineEmits(['loading']);
+const uiStore = useUIStore();
 const wpStore = useWpStore();
 const posts = ref([]);
 
 onMounted(async () => {
-  emit('loading', true);
+  uiStore.isLoading = true;
   posts.value = await wpStore.getPosts();
-  emit('loading', false);
+  uiStore.isLoading = false;
 });
 </script>
 

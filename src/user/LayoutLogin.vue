@@ -1,21 +1,15 @@
 <script setup>
-import { ref, watch, computed } from 'vue';
+import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import LoadingSpinner from '@components/LoadingSpinner.vue';
 
 const _route = useRoute();
 
 const message = ref(_parseRouteMessage(_route.query.message));
 const messageType = ref(_route.query.messageType || 'alert');
-const isLoading = ref(false);
 
 const updateToast = (newMessage, newMessageType) => {
   message.value = _parseRouteMessage(newMessage);
   messageType.value = newMessageType || 'alert';
-};
-
-const updateLoading = (newState) => {
-  isLoading.value = newState;
 };
 
 watch(_route, (newRoute) => {
@@ -96,8 +90,6 @@ function _parseRouteMessage(code) {
         <component :is="Component" :key="route.path" />
       </Transition>
     </router-view>
-
-    <LoadingSpinner />
   </div>
 </template>
 
@@ -135,9 +127,9 @@ function _parseRouteMessage(code) {
     text-decoration: underline
 
   &.is-alert
-    border-left-color: var(--colorRed)
+    border-left-color: var(--colorAlert)
   &.is-good
-    border-left-color: var(--colorGreen)
+    border-left-color: var(--colorGood)
 
 // Message animation
 .slide-enter-from,

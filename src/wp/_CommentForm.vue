@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import LoadingSpinner from '@components/LoadingSpinner.vue';
+import { useUIStore } from '@/stores-ui';
 import { useWpStore } from './stores-wp';
 
 const emit = defineEmits(['submit']);
@@ -16,42 +16,38 @@ const props = defineProps({
 });
 
 const wpStore = useWpStore();
+const uiStore = useUIStore();
 
 const formBody = ref();
 const formMessage = ref();
 const formMessageType = ref('error');
-const isLoading = ref(false);
 
 const submitComment = async () => {
-  isLoading.value = true;
+  uiStore.isLoading = true;
   formMessage.value = '';
 
-  if (formBody.value) {
+  if (!formBody.value) {
+    formMessage.value = 'Comment cannot be empty';
+    formMessageType.value = 'error';
+    return;
+  }
+
+  try {
     const response = await wpStore.postComment({
       post: props.postId,
       content: formBody.value,
       parent: props.parentId,
     });
-
-    switch (response.status) {
-      case 401:
-        formMessage.value = response.message;
-        formMessageType.value = 'error';
-        break;
-      case 200:
-      default:
-        formMessage.value = 'Comment posted successfully';
-        formMessageType.value = 'success';
-        emit('submit', response.data);
-    }
-
+    formMessage.value = 'Comment posted successfully';
+    formMessageType.value = 'success';
     formBody.value = '';
-  } else {
-    formMessage.value = 'Comment cannot be empty';
+    emit('submit', response.data);
+  } catch (error) {
+    formMessage.value = error.message;
     formMessageType.value = 'error';
   }
 
-  isLoading.value = false;
+  uiStore.isLoading = false;
 };
 </script>
 
@@ -78,8 +74,6 @@ const submitComment = async () => {
         {{ formMessage }}
       </div>
     </Transition>
-
-    <LoadingSpinner v-if="isLoading" />
   </form>
 </template>
 
@@ -102,14 +96,14 @@ const submitComment = async () => {
   width: 50%
   background-color: var(--textInvert)
   padding: 0.5rem 1rem
-  border-left: 4px solid var(--colorRed)
+  border-left: 4px solid var(--colorAlert)
   border-radius: var(--gRadius)
   box-shadow: var(--shadow0)
 
   font-size: var(--sFontSize)
 
   &.is-success
-    border-left-color: var(--colorGreen)
+    border-left-color: var(--colorGood)
 
 .fade-enter-from,
 .fade-leave-to

@@ -1,28 +1,23 @@
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 
 export const useUIStore = defineStore('ui', () => {
   const isLoading = ref(false);
-  const isOffcanvasOpen = ref(false);
+  const isOnline = ref(true);
 
-  /**
-   * Open or close the mobile menu
-   */
-  function toggleOffcanvas() {
-    isOffcanvasOpen.value = !isOffcanvasOpen.value;
-    document.body.classList.toggle('has-open-offcanvas', isOffcanvasOpen);
-  }
-
-  function closeOffcanvas() {
-    isOffcanvasOpen.value = false;
-    document.body.classList.remove('has-open-offcanvas');
-  }
+  const windowWidth = ref(window.innerWidth);
+  const isDesktop = computed(() => windowWidth.value >= 961);
+  const isTablet = computed(() => windowWidth.value <= 820);
+  const isPhone = computed(() => windowWidth.value <= 480);
 
   return {
     isLoading,
-    isOffcanvasOpen,
-    toggleOffcanvas,
-    closeOffcanvas,
+    isOnline,
+
+    windowWidth,
+    isDesktop,
+    isTablet,
+    isPhone,
   };
 });
 

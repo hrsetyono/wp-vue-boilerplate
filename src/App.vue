@@ -5,6 +5,9 @@ import { useAuthStore } from '@/user/stores-auth';
 
 import Layout from '@/main/Layout.vue'; // this is preloaded to make transition smooth
 import LayoutLogin from '@/user/LayoutLogin.vue';
+import LoadingSpinner from '@components/LoadingSpinner.vue';
+import OfflineAlert from '@components/OfflineAlert.vue';
+import VhFix from '@components/VhFix.vue';
 
 const route = useRoute();
 
@@ -26,6 +29,10 @@ onMounted(async () => {
 
 <template>
   <component :is="getLayout()" />
+
+  <VhFix />
+  <LoadingSpinner />
+  <OfflineAlert />
 </template>
 
 <style lang="sass" scoped>
