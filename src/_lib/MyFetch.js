@@ -48,9 +48,13 @@ class MyFetch {
       return JSON.parse(cached);
     }
 
-    const data = await this.get(path);
-    sessionStorage.setItem(path, JSON.stringify(data));
-    return data;
+    try {
+      const data = await this.get(path);
+      sessionStorage.setItem(path, JSON.stringify(data));
+      return data;
+    } catch (error) {
+      return Promise.reject(error);
+    }
   }
 
   /**
@@ -62,9 +66,13 @@ class MyFetch {
       return JSON.parse(cached);
     }
 
-    const data = await this.get(path);
-    localStorage.setItem(path, JSON.stringify(data));
-    return data;
+    try {
+      const data = await this.get(path);
+      localStorage.setItem(path, JSON.stringify(data));
+      return data;
+    } catch (error) {
+      return Promise.reject(error);
+    }
   }
 
   async post(apiPath, body) {
